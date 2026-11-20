@@ -1,0 +1,32 @@
+---
+title: Arquitetura
+description: Visão geral da arquitetura criptográfica e do contêiner.
+---
+
+# Arquitetura
+
+Esta página descreve o desenho atual em alto nível. O formato TVLT V1 ainda é preliminar e não deve ser considerado congelado.
+
+## Fluxo de proteção
+
+1. Os dados de origem são processados em fluxo.
+2. A compactação Zstandard é aplicada antes da criptografia.
+3. Os dados compactados são divididos em registros autenticados.
+4. AES-256-GCM protege cada registro e autentica os metadados associados.
+5. Uma chave de criptografia de dados (DEK) é protegida por compartimentos independentes.
+
+## Compartimentos de chave
+
+- **FIDO2/HMAC-secret:** material derivado de uma credencial FIDO2 e de parâmetros armazenados no descritor do compartimento.
+- **Recuperação:** segredo aleatório independente, processado por HKDF-SHA256.
+
+Os dois compartimentos protegem a mesma DEK. O caminho de recuperação não depende da presença do autenticador físico.
+
+## Limites
+
+- O projeto ainda não passou por auditoria criptográfica independente.
+- O formato pode mudar antes de uma versão estável.
+- O código atual não oferece ainda criação de cofres e restauração de pastas pela interface.
+- A proteção de dados em repouso não substitui segurança do sistema operacional, proteção contra malware ou backup redundante.
+
+Consulte o [modelo de ameaças](https://github.com/dieguesmosken/teuzin-vault/blob/main/docs/THREAT_MODEL.md) e a [pesquisa técnica](https://github.com/dieguesmosken/teuzin-vault/blob/main/docs/TECHNICAL_RESEARCH.md).
