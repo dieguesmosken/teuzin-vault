@@ -7,16 +7,16 @@
     BlinkMacSystemFont,
     'Segoe UI',
     sans-serif;
-  color: #ecebe5;
-  background: #111310;
+  color: #F0EAF8;
+  background: #0B0812;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  --bg: #111310;
+  --bg: #0B0812;
   --panel: #191c18;
-  --line: #343a31;
-  --muted: #a2a89b;
-  --paper: #e9e7dc;
-  --accent: #c6a875;
+  --line: #33243F;
+  --muted: #A99BB8;
+  --paper: #F1ECF8;
+  --accent: #A78BFA;
   --mono: ui-monospace, 'Cascadia Code', 'Segoe UI Mono', monospace;
 }
 * {
@@ -44,8 +44,8 @@ a {
   left: 1rem;
   z-index: 100;
   padding: 1rem;
-  color: #111310;
-  background: #f0efe7;
+  color: #0B0812;
+  background: #F5F0FA;
   transform: translateY(-200%);
 }
 .skip:focus {
@@ -84,7 +84,7 @@ a {
   display: flex;
   align-items: center;
   gap: 30px;
-  color: #b8bcb1;
+  color: #C4B8D3;
   font-size: 0.78rem;
 }
 .topbar nav a:hover,
@@ -92,7 +92,7 @@ a {
   color: var(--accent);
 }
 .topbar .nav-github {
-  border: 1px solid #59604f;
+  border: 1px solid #59436D;
   padding: 10px 15px;
   color: var(--paper);
 }
@@ -114,9 +114,9 @@ a {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #a6b28a;
+  background: #B794F6;
   margin-right: 9px;
-  box-shadow: 0 0 0 4px #a6b28a1c;
+  box-shadow: 0 0 0 4px #B794F61C;
 }
 h1,
 h2,
@@ -140,7 +140,7 @@ h2 em {
 .intro {
   font-size: 1.05rem;
   line-height: 1.85;
-  color: #aeb3a8;
+  color: #BDB0CD;
   max-width: 570px;
 }
 .hero-actions {
@@ -156,7 +156,7 @@ h2 em {
   padding: 14px 18px;
   font-size: 0.78rem;
   font-weight: 700;
-  border: 1px solid #59604f;
+  border: 1px solid #59436D;
   transition:
     transform 0.2s,
     border-color 0.2s;
@@ -179,11 +179,11 @@ h2 em {
   flex-wrap: wrap;
   font: 0.59rem var(--mono);
   letter-spacing: 0.09em;
-  color: #7e8877;
+  color: #9B87B3;
 }
 .product-panel {
-  background: linear-gradient(145deg, #20251e, #151813);
-  border: 1px solid #3b4335;
+  background: linear-gradient(145deg, #21172D, #100B18);
+  border: 1px solid #49345F;
   min-height: 470px;
   padding: 22px 24px;
   position: relative;
@@ -193,7 +193,7 @@ h2 em {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(130deg, transparent 45%, #c6a8750b);
+  background: linear-gradient(130deg, transparent 45%, #A78BFA0D);
   pointer-events: none;
 }
 .panel-top,
@@ -203,16 +203,16 @@ h2 em {
   gap: 12px;
   font: 0.61rem var(--mono);
   letter-spacing: 0.09em;
-  color: #9ca594;
+  color: #B7A9C8;
 }
 .panel-state {
-  color: #aab69b;
+  color: #D0B8F5;
 }
 .panel-state i {
   display: inline-block;
   width: 6px;
   height: 6px;
-  background: #aabf8a;
+  background: #B794F6;
   border-radius: 50%;
   margin-right: 6px;
 }
@@ -224,7 +224,7 @@ h2 em {
 }
 .orbit {
   position: absolute;
-  border: 1px solid #66715845;
+  border: 1px solid #A78BFA40;
   border-radius: 50%;
   width: 245px;
   height: 245px;
@@ -238,13 +238,13 @@ h2 em {
 .vault-core {
   width: 112px;
   height: 112px;
-  border: 1px solid #b99c6a;
+  border: 1px solid #C4A7FF;
   border-radius: 50%;
   display: grid;
   place-items: center;
   color: var(--accent);
-  background: #c6a8750c;
-  box-shadow: 0 0 70px #c6a87518;
+  background: #A78BFA0C;
+  box-shadow: 0 0 70px #A78BFA24;
 }
 .vault-core svg {
   width: 72px;
@@ -254,9 +254,9 @@ h2 em {
   font: 0.57rem var(--mono);
   letter-spacing: 0.1em;
   color: #c3c7b9;
-  background: #1b2018;
+  background: #191122;
   padding: 7px 9px;
-  border: 1px solid #46503e;
+  border: 1px solid #513A69;
 }
 .label-key {
   top: 34px;
@@ -271,7 +271,7 @@ h2 em {
   bottom: 42px;
 }
 .panel-bottom {
-  border-top: 1px solid #3a4234;
+  border-top: 1px solid #3C2A4D;
   padding-top: 17px;
 }
 .panel-bottom div {
@@ -280,7 +280,7 @@ h2 em {
 }
 .panel-bottom small {
   font-size: 0.53rem;
-  color: #929b89;
+  color: #C0B2D2;
 }
 .panel-bottom strong {
   font: 0.66rem var(--mono);
@@ -290,9 +290,9 @@ h2 em {
   display: flex;
   align-items: center;
   gap: 16px;
-  border-block: 1px solid #574c35;
+  border-block: 1px solid #503A65;
   padding: 20px 0;
-  color: #c9c0a9;
+  color: #D1C4DF;
   font-size: 0.77rem;
 }
 .notice p {
@@ -301,7 +301,7 @@ h2 em {
   line-height: 1.7;
 }
 .notice b {
-  color: #e3c78f;
+  color: #E3D2FF;
 }
 .notice a {
   white-space: nowrap;
@@ -311,7 +311,7 @@ h2 em {
 .notice-mark {
   width: 25px;
   height: 25px;
-  border: 1px solid #9d8153;
+  border: 1px solid #A78BFA;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -366,7 +366,7 @@ h2 em {
 }
 .section-dark {
   background: #191d17;
-  border-block: 1px solid #30382c;
+  border-block: 1px solid #30213F;
 }
 .flow {
   display: grid;
@@ -377,8 +377,8 @@ h2 em {
 .flow-node {
   min-height: 135px;
   padding: 18px;
-  border: 1px solid #46503e;
-  background: #1d231b;
+  border: 1px solid #513A69;
+  background: #1B1327;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -392,10 +392,10 @@ h2 em {
 }
 .flow-node small {
   font: 0.59rem var(--mono);
-  color: #929b89;
+  color: #C0B2D2;
 }
 .flow-final {
-  border-color: #9b8050;
+  border-color: #B794F6;
   background: #29261d;
 }
 .flow-arrow {
@@ -429,7 +429,7 @@ h2 em {
   background: var(--accent);
 }
 .path-alt {
-  background: #a8b69a;
+  background: #C084FC;
 }
 .split {
   display: grid;
@@ -448,13 +448,13 @@ h2 em {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #8a9679;
+  background: #A58BBE;
 }
 .status.current {
   background: var(--accent);
 }
 .status.pending {
-  background: #697064;
+  background: #685577;
 }
 .status-list b {
   font-size: 0.78rem;
@@ -473,8 +473,8 @@ h2 em {
 .closing {
   margin-top: 100px;
   padding: 40px;
-  border: 1px solid #4c5142;
-  background: linear-gradient(110deg, #1e241b, #171a15);
+  border: 1px solid #563D70;
+  background: linear-gradient(110deg, #1D1428, #120D19);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -511,7 +511,7 @@ h2 em {
 }
 .footer small {
   grid-column: 1/-1;
-  color: #778071;
+  color: #9284A6;
   font-size: 0.65rem;
 }
 .brand-mark.small {
