@@ -1,0 +1,80 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Ambientes e builds
+.venv/
+venv/
+env/
+build/
+dist/
+
+# Segredos e credenciais
+.env
+.env.*
+!.env.example
+.secrets/
+secrets/
+credentials/
+*.pem
+*.key
+*.p12
+*.pfx
+*.secrets
+*.secret
+*.kdbx
+
+# Dados locais e backups
+.local/
+*.backup
+*.bak
+*.old
+*.rar
+*.zip
+*.7z
+*.tar
+*.gz
+*.enc
+*.vault
+
+# Logs e sistema
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+.teuzin-vault-*.partial
+# Arquivos do Teuzin Vault
+*.tvault
+*.tvault.*
+# Bancos e dados locais
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+# Tokens e credenciais adicionais
+*.token
+*.jwt
+*.cookie
+*.ppk
+id_rsa
+id_ed25519
+*.tvault
+*.tvault.*
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+*.token
+*.jwt
+*.cookie
+*.ppk
+id_rsa
+id_ed25519

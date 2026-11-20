@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "teuzin-vault"
+version = "0.1.0"
+description = "Aplicativo desktop para compactação e criptografia segura de arquivos."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "PySide6>=6.12",
+    "cryptography>=45",
+    "fido2>=2.2.1"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+    "pytest-cov>=6"
+]
+
+[project.scripts]
+teuzin-vault = "teuzin_vault.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
