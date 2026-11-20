@@ -17,7 +17,7 @@ export default defineConfig({
         { icon: 'github', label: 'GitHub', href: 'https://github.com/dieguesmosken/teuzin-vault' },
       ],
       sidebar: [
-        { label: 'Comece aqui', items: [{ slug: 'docs/index' }, { slug: 'docs/installation' }] },
+        { label: 'Comece aqui', items: [{ label: 'Visão geral', link: '/docs/' }, { slug: 'docs/installation' }] },
         { label: 'Produto e segurança', items: [{ slug: 'docs/architecture' }, { slug: 'docs/security' }, { slug: 'docs/recovery' }] },
         { label: 'Transparência', items: [{ slug: 'docs/licensing' }, { slug: 'docs/references' }] },
       ],
