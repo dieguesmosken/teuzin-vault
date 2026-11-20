@@ -8,7 +8,7 @@ export default defineConfig({
     starlight({
       title: 'Teuzin Vault — Documentação',
       description: 'Guias, arquitetura, segurança e conformidade do Teuzin Vault.',
-      defaultLocale: 'pt-BR',
+      defaultLocale: 'root',
       locales: {
         root: { label: 'Português', lang: 'pt-BR' },
       },
