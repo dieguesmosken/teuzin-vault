@@ -11,6 +11,7 @@ Definir um formato de arquivo para armazenar arquivos e pastas
 compactados e protegidos criptograficamente.
 
 O formato deve permitir:
+
 - Processamento incremental de arquivos grandes.
 - Integridade e autenticidade dos dados.
 - Detecção de adulteração, reordenação e truncamento.
@@ -106,6 +107,7 @@ Configuração preliminar:
 - Contadores nunca poderão ser reutilizados com a mesma DEK.
 
 Cada registro deverá autenticar:
+
 - Cabeçalho do contêiner.
 - Tipo de registro.
 - Índice sequencial.
@@ -119,6 +121,7 @@ O limite de registros deverá impedir o estouro do contador.
 Um registro final autenticado será obrigatório.
 
 Ele deverá confirmar:
+
 - Quantidade de blocos.
 - Quantidade total de bytes compactados.
 - Encerramento correto do fluxo.
@@ -157,6 +160,7 @@ e finalização atômica sempre que suportada pelo sistema.
 ## 11. Privacidade
 
 Não deverão ser armazenados:
+
 - PINs FIDO2.
 - Segredos HMAC-secret.
 - DEKs em texto puro.
@@ -170,6 +174,7 @@ Esta especificação é preliminar.
 Nenhuma compatibilidade com versões futuras está garantida.
 
 O formato só poderá ser considerado estável após:
+
 - Implementação completa.
 - Testes de integridade e recuperação.
 - Testes de arquivos grandes.

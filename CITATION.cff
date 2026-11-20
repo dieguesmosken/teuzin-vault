@@ -1,12 +1,10 @@
 cff-version: 1.2.0
-message: "If you use Teuzin Vault in research or software, please cite this project."
-title: "Teuzin Vault"
+message: 'If you use Teuzin Vault in research or software, please cite this project.'
+title: 'Teuzin Vault'
 type: software
 authors:
   - family-names: Diegues
-    given-names: "Matheus M."
-version: 0.1.0
-date-released: 2026-11-20
+    given-names: 'Matheus M.'
 license: Apache-2.0
-repository-code: "https://github.com/dieguesmosken/teuzin-vault"
-url: "https://vault.teuzin.com.br"
+repository-code: 'https://github.com/dieguesmosken/teuzin-vault'
+url: 'https://vault.teuzin.com.br'

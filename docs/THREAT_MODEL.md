@@ -11,6 +11,7 @@ Este documento registra o modelo inicial do Teuzin Vault com base no código pú
 O modelo cobre o núcleo atual de contêineres para arquivos individuais, os compartimentos de proteção da DEK, a integração FIDO2/HMAC-secret inicial no Windows, a compactação Zstandard e a publicação transacional de arquivos.
 
 Ainda não cobre como implementado:
+
 - interface completa de criação e restauração;
 - fluxo de registro de novas credenciais FIDO2 pela interface;
 - apresentação e confirmação de armazenamento do segredo de recuperação;
@@ -31,16 +32,16 @@ Quando essas funções forem implementadas, o modelo deverá ser atualizado ante
 
 ## 3. Ativos que precisam de proteção
 
-| Ativo | Consequência de exposição ou perda |
-|---|---|
-| Arquivo original e arquivo restaurado | Vazamento de dados pessoais ou profissionais |
-| DEK de 256 bits | Acesso a todo o conteúdo protegido pelo contêiner |
-| Resultado HMAC-secret | Pode derivar a chave que abre o compartimento FIDO2 |
-| Segredo de recuperação de 256 bits | Pode abrir o compartimento de recuperação |
-| Chaves derivadas por HKDF | Podem abrir o compartimento correspondente |
-| Conteúdo temporário em claro durante restauração | Vazamento local se o processo ou sistema for comprometido |
-| Metadados públicos do contêiner | Revelação de associação de credencial, formato, tamanhos e estrutura |
-| Metadados locais públicos da credencial | Exposição de identificadores e dados públicos da credencial; não equivalem ao segredo HMAC |
+| Ativo                                            | Consequência de exposição ou perda                                                         |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| Arquivo original e arquivo restaurado            | Vazamento de dados pessoais ou profissionais                                               |
+| DEK de 256 bits                                  | Acesso a todo o conteúdo protegido pelo contêiner                                          |
+| Resultado HMAC-secret                            | Pode derivar a chave que abre o compartimento FIDO2                                        |
+| Segredo de recuperação de 256 bits               | Pode abrir o compartimento de recuperação                                                  |
+| Chaves derivadas por HKDF                        | Podem abrir o compartimento correspondente                                                 |
+| Conteúdo temporário em claro durante restauração | Vazamento local se o processo ou sistema for comprometido                                  |
+| Metadados públicos do contêiner                  | Revelação de associação de credencial, formato, tamanhos e estrutura                       |
+| Metadados locais públicos da credencial          | Exposição de identificadores e dados públicos da credencial; não equivalem ao segredo HMAC |
 
 ## 4. Limites de confiança
 
@@ -115,23 +116,24 @@ Um atacante pode apagar o arquivo, bloquear o disco, impedir o uso do autenticad
 
 ## 6. Controles observados no código atual
 
-| Área | Controle implementado | Limite/validação pendente |
-|---|---|---|
-| DEK | 32 bytes aleatórios por contêiner | Revisar geração, ciclo de vida e política de reuso |
-| Compartimentos | FIDO2 e recuperação, ambos protegendo a mesma DEK | V1 exige exatamente dois slots; extensibilidade pendente |
-| KDF | HKDF-SHA256 e rótulos distintos por finalidade | Não usar diretamente para transformar senhas humanas em chaves |
-| Proteção de DEK | AES-256-GCM com nonce aleatório e AAD contendo digest do cabeçalho e descritor | Rever atualização/rotação de slots |
-| Registros de dados | AES-256-GCM, AAD com digest do cabeçalho e cabeçalho binário do registro | Revisar limites criptográficos agregados por DEK |
-| Nonce de dados | Prefixo aleatório de 4 bytes + sequência de 8 bytes | Garantir nunca retomar operação com mesma DEK/contador |
-| Limites atuais | 1 MiB por registro e até 1.048.576 registros de dados | Isso permite até 1 TiB de payload comprimido em termos nominais; o limite deve ser revisado com análise formal de uso de AES-GCM |
-| Finalização | Registro final autenticado com contagens e tamanhos | Testes adversariais adicionais |
-| Zstandard | Streaming, checksum, limite de janela e limite global de saída | Fuzzing e testes de carga |
-| Arquivos | Temporário no diretório de destino e publicação após sucesso | TOCTOU, reparse points/junctions e temporários após crash |
-| FIDO2 | Confere o Credential ID esperado contra os metadados locais; autentica com a credencial armazenada | Política UV, allowlist de origem explícita, ciclo de vida e teste por plataforma |
+| Área               | Controle implementado                                                                              | Limite/validação pendente                                                                                                        |
+| ------------------ | -------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| DEK                | 32 bytes aleatórios por contêiner                                                                  | Revisar geração, ciclo de vida e política de reuso                                                                               |
+| Compartimentos     | FIDO2 e recuperação, ambos protegendo a mesma DEK                                                  | V1 exige exatamente dois slots; extensibilidade pendente                                                                         |
+| KDF                | HKDF-SHA256 e rótulos distintos por finalidade                                                     | Não usar diretamente para transformar senhas humanas em chaves                                                                   |
+| Proteção de DEK    | AES-256-GCM com nonce aleatório e AAD contendo digest do cabeçalho e descritor                     | Rever atualização/rotação de slots                                                                                               |
+| Registros de dados | AES-256-GCM, AAD com digest do cabeçalho e cabeçalho binário do registro                           | Revisar limites criptográficos agregados por DEK                                                                                 |
+| Nonce de dados     | Prefixo aleatório de 4 bytes + sequência de 8 bytes                                                | Garantir nunca retomar operação com mesma DEK/contador                                                                           |
+| Limites atuais     | 1 MiB por registro e até 1.048.576 registros de dados                                              | Isso permite até 1 TiB de payload comprimido em termos nominais; o limite deve ser revisado com análise formal de uso de AES-GCM |
+| Finalização        | Registro final autenticado com contagens e tamanhos                                                | Testes adversariais adicionais                                                                                                   |
+| Zstandard          | Streaming, checksum, limite de janela e limite global de saída                                     | Fuzzing e testes de carga                                                                                                        |
+| Arquivos           | Temporário no diretório de destino e publicação após sucesso                                       | TOCTOU, reparse points/junctions e temporários após crash                                                                        |
+| FIDO2              | Confere o Credential ID esperado contra os metadados locais; autentica com a credencial armazenada | Política UV, allowlist de origem explícita, ciclo de vida e teste por plataforma                                                 |
 
 ## 7. Metadados que podem vazar
 
 O cabeçalho atual contém informações públicas como:
+
 - ID aleatório do contêiner;
 - algoritmos e tamanho do bloco;
 - prefixo de nonce;
@@ -146,6 +148,7 @@ A presença de um Credential ID no cabeçalho não revela por si só o segredo H
 ## 8. Hipóteses e exclusões explícitas
 
 Este modelo assume:
+
 - sistema operacional, biblioteca criptográfica, Python e dependências não comprometidos;
 - autenticador genuíno e firmware sem comprometimento;
 - geração aleatória funcionando corretamente;
@@ -153,6 +156,7 @@ Este modelo assume:
 - arquivos-fonte disponíveis e legíveis durante a operação.
 
 Não promete:
+
 - proteger plaintext de malware local ou administrador/root;
 - apagar de forma irrecuperável temporários em SSDs;
 - impedir exclusão, rollback ou substituição de arquivos por um atacante com acesso ao armazenamento;

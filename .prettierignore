@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+coverage/
+.venv/
+venv/
+package-lock.json
+*.min.js
+*.min.css
