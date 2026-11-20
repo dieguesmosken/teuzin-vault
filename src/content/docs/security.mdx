@@ -1,0 +1,30 @@
+---
+title: Segurança e limitações
+description: Modelo de ameaças, decisões e limites conhecidos.
+---
+
+# Segurança
+
+O Teuzin Vault está em desenvolvimento experimental. Não passou por auditoria independente e não deve ser utilizado como única cópia de dados críticos.
+
+## Controles implementados
+
+- AES-256-GCM para criptografia autenticada.
+- HKDF-SHA256 para derivação de chaves com contextos separados.
+- Registros autenticados e validação de sequência.
+- Limites para descompactação e tamanho de dados.
+- Compartimentos independentes para FIDO2 e recuperação.
+- Verificação do usuário obrigatória no fluxo FIDO2 validado em hardware.
+- Publicação transacional de arquivos restaurados e recusa de sobrescrita por padrão.
+
+## O que isso não garante
+
+- Ausência de vulnerabilidades ou falhas de implementação.
+- Proteção contra malware, keyloggers ou comprometimento do sistema operacional.
+- Apagamento seguro de dados temporários em todos os sistemas de arquivos.
+- Recuperação quando todos os autenticadores e segredos de recuperação forem perdidos.
+- Compatibilidade futura do formato antes de sua estabilização.
+
+## Reportar vulnerabilidades
+
+Não publique detalhes exploráveis de uma vulnerabilidade em issue pública. Consulte a política [SECURITY.md](https://github.com/dieguesmosken/teuzin-vault/blob/main/SECURITY.md) do repositório.
