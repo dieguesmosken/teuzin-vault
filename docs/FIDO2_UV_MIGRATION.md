@@ -33,3 +33,18 @@ The stream migration authenticates the encrypted record sequence but does
 not decompress or rewrite its Zstandard payload. Normal restoration remains
 responsible for decompression limits and plaintext validation. This project is
 still experimental and has not undergone an independent security audit.
+
+## Real-device validation (2026-11-20)
+
+- Hardware: Yubico T110 using Windows WebAuthn.
+- HMAC-secret retrieval succeeded with user verification required.
+- A disposable TVLT V1 container was migrated into a separate copy.
+- The original container was preserved byte-for-byte.
+- The new FIDO2 slot successfully unlocked the migrated container.
+- The independent recovery slot also successfully unlocked it.
+- Temporary files were removed; no secrets were displayed or persisted.
+
+Scope: the source container used a synthetic legacy FIDO2 secret and
+was unlocked through its recovery secret. This validates the hardware
+UV operation and migration mechanics, not migration of a personal
+pre-existing vault or an independent security audit.
