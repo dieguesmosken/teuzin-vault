@@ -227,7 +227,7 @@ def test_hmac_secret_authentication_flow_is_verified(
 
     assert result == expected_secret
     assert calls["verified"] is True
-    assert calls["uv"] == "discouraged"
+    assert calls["uv"] == "required"
     assert calls["options"]["extensions"]["hmacGetSecret"]["salt1"] == salt
 
 

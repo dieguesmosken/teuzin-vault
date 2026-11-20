@@ -8,12 +8,14 @@ from teuzin_vault.core.container_format import (
     parse_header,
     serialize_header,
 )
+from teuzin_vault.core.key_slots import SLOT_RECORD_SIZE
 from teuzin_vault.core.key_protection import (
     KeyProtectionError,
     derive_fido2_wrapping_key,
     derive_recovery_wrapping_key,
     generate_recovery_secret,
     protect_dek,
+    reprotect_fido2_slot,
     recover_dek_with_fido2,
     recover_dek_with_recovery,
 )
@@ -212,3 +214,31 @@ def test_invalid_recovery_salt_is_rejected():
 
     with pytest.raises(KeyProtectionError):
         derive_recovery_wrapping_key(b"B" * 32, descriptor)
+
+
+def test_reprotect_fido2_slot_preserves_recovery_record(protection_setup):
+    parsed, dek, old_secret, recovery_secret, old_records = protection_setup
+    new_secret = b"N" * 32
+
+    new_records = reprotect_fido2_slot(
+        parsed,
+        old_records,
+        dek,
+        fido2_hmac_secret=new_secret,
+    )
+
+    descriptors = parsed.header["key_slots"]
+    recovery_index = next(
+        index for index, descriptor in enumerate(descriptors)
+        if descriptor["type"] == "recovery"
+    )
+    start = recovery_index * SLOT_RECORD_SIZE
+    end = start + SLOT_RECORD_SIZE
+
+    assert new_records[start:end] == old_records[start:end]
+    assert new_records != old_records
+    assert recover_dek_with_fido2(parsed, new_records, new_secret) == dek
+    assert recover_dek_with_recovery(parsed, new_records, recovery_secret) == dek
+
+    with pytest.raises(ValueError):
+        recover_dek_with_fido2(parsed, new_records, old_secret)

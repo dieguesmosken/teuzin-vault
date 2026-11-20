@@ -318,7 +318,8 @@ def get_hmac_secret(
 
         request_options, state = server.authenticate_begin(
             credentials,
-            user_verification="discouraged",
+            # Enforce PIN or built-in biometric verification. No silent fallback.
+            user_verification="required",
         )
 
         public_key_options = {

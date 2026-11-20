@@ -11,6 +11,7 @@ from teuzin_vault.core.container_format import (
 from teuzin_vault.core.file_operations import (
     FileOperationError,
     create_container_file,
+    migrate_container_file,
     restore_container_file,
 )
 from teuzin_vault.core.key_protection import (
@@ -282,6 +283,80 @@ def test_restore_requires_exactly_one_unlocking_method(tmp_path):
             max_output_size=100,
             fido2_hmac_secret=b"A" * 32,
             recovery_secret=recovery,
+        )
+
+    assert not destination.exists()
+    assert no_temp_files(tmp_path) == []
+
+
+def test_file_migration_publishes_new_copy_and_preserves_original(tmp_path):
+    original = b"transactional UV migration test. " * 3000
+    source = tmp_path / "legacy.tvault"
+    destination = tmp_path / "migrated.tvault"
+    restored_fido = tmp_path / "restored-fido.bin"
+    restored_recovery = tmp_path / "restored-recovery.bin"
+    plain = tmp_path / "plain.bin"
+    plain.write_bytes(original)
+
+    parsed, dek, slots, old_fido_secret, recovery_secret = make_material()
+    create_container_file(plain, source, parsed, slots, dek)
+    source_before = source.read_bytes()
+    new_fido_secret = b"V" * 32
+
+    result = migrate_container_file(
+        source,
+        destination,
+        recovery_secret=recovery_secret,
+        fido2_hmac_secret=new_fido_secret,
+    )
+
+    assert source.read_bytes() == source_before
+    assert destination.is_file()
+    assert result.container_bytes == destination.stat().st_size
+
+    restore_container_file(
+        destination,
+        restored_fido,
+        max_output_size=len(original),
+        fido2_hmac_secret=new_fido_secret,
+    )
+    restore_container_file(
+        destination,
+        restored_recovery,
+        max_output_size=len(original),
+        recovery_secret=recovery_secret,
+    )
+    assert restored_fido.read_bytes() == original
+    assert restored_recovery.read_bytes() == original
+
+    with pytest.raises(ValueError):
+        restore_container_file(
+            destination,
+            tmp_path / "old-key-restore.bin",
+            max_output_size=len(original),
+            fido2_hmac_secret=old_fido_secret,
+        )
+    assert no_temp_files(tmp_path) == []
+
+
+def test_failed_file_migration_does_not_publish_destination(tmp_path):
+    plain = tmp_path / "plain.bin"
+    source = tmp_path / "damaged.tvault"
+    destination = tmp_path / "should-not-exist.tvault"
+    plain.write_bytes(b"migration tamper test" * 500)
+
+    parsed, dek, slots, _, recovery_secret = make_material()
+    create_container_file(plain, source, parsed, slots, dek)
+    damaged = bytearray(source.read_bytes())
+    damaged[-1] ^= 1
+    source.write_bytes(damaged)
+
+    with pytest.raises(ValueError):
+        migrate_container_file(
+            source,
+            destination,
+            recovery_secret=recovery_secret,
+            fido2_hmac_secret=b"V" * 32,
         )
 
     assert not destination.exists()

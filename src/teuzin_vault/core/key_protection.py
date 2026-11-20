@@ -209,6 +209,67 @@ def protect_dek(
     )
 
 
+
+def reprotect_fido2_slot(
+    parsed_header: ParsedHeader,
+    record_data: bytes,
+    dek: bytes,
+    *,
+    fido2_hmac_secret: bytes,
+) -> bytes:
+    """Rewrap only the existing FIDO2 slot, preserving recovery bytes.
+
+    The header and descriptors remain unchanged, so their authenticated
+    data stays stable. A fresh AES-GCM nonce is generated for the new slot.
+    """
+    _validate_secret("dek", dek)
+    _validate_secret("fido2_hmac_secret", fido2_hmac_secret)
+    _validate_parsed_header(parsed_header)
+
+    if not isinstance(record_data, bytes):
+        raise TypeError("record_data must be bytes.")
+
+    parsed_records = parse_key_slot_records(record_data, parsed_header)
+    if parsed_records.consumed != len(record_data):
+        raise KeyProtectionError("Unexpected data after key slot records.")
+
+    updated_records = list(parsed_records.records)
+    fido2_index = None
+
+    for index, descriptor in enumerate(parsed_header.header["key_slots"]):
+        if descriptor["type"] == "fido2-hmac-secret":
+            fido2_index = index
+            wrapping_key = derive_fido2_wrapping_key(
+                fido2_hmac_secret,
+                descriptor,
+            )
+            updated_records[index] = wrap_dek(
+                dek,
+                wrapping_key,
+                descriptor,
+                parsed_header.digest,
+            )
+            break
+
+    if fido2_index is None:
+        raise KeyProtectionError("FIDO2 key compartment was not found.")
+
+    updated_data = serialize_key_slot_records(
+        updated_records,
+        parsed_header,
+    )
+
+    # Prove that the replacement slot actually unwraps the intended DEK.
+    if recover_dek_with_fido2(
+        parsed_header,
+        updated_data,
+        fido2_hmac_secret,
+    ) != dek:
+        raise KeyProtectionError("Replacement FIDO2 slot verification failed.")
+
+    return updated_data
+
+
 def _recover_with_slot(
     parsed_header: ParsedHeader,
     record_data: bytes,

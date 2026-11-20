@@ -11,6 +11,7 @@ from teuzin_vault.core.container_format import (
 )
 from teuzin_vault.core.container_stream import (
     ContainerStreamError,
+    migrate_container_stream,
     restore_container_stream,
     write_container_stream,
 )
@@ -279,3 +280,62 @@ def test_partial_output_writer_is_supported():
     )
 
     assert destination.getvalue() == original
+
+
+def test_migration_preserves_header_recovery_slot_and_encrypted_records():
+    original = b"migration preserves encrypted payload bytes. " * 4000
+    setup = make_setup(original)
+    new_secret = b"U" * 32
+    migrated_output = BytesIO()
+
+    result = migrate_container_stream(
+        BytesIO(setup["container"]),
+        migrated_output,
+        recovery_secret=setup["recovery_secret"],
+        fido2_hmac_secret=new_secret,
+    )
+    migrated = migrated_output.getvalue()
+    boundary = setup["header_size"] + setup["slot_size"]
+    # The fixture sorts FIDO2 id 11.. before recovery id 22..; each slot is 76 bytes.
+    recovery_start = setup["header_size"] + 76
+
+    assert migrated[:setup["header_size"]] == setup["container"][:setup["header_size"]]
+    assert migrated[recovery_start:recovery_start + 76] == setup["container"][recovery_start:recovery_start + 76]
+    assert migrated[boundary:] == setup["container"][boundary:]
+    assert result.container_bytes == len(migrated)
+    assert result.original_bytes == len(original)
+
+    for kwargs in (
+        {"fido2_hmac_secret": new_secret},
+        {"recovery_secret": setup["recovery_secret"]},
+    ):
+        restored = BytesIO()
+        restore_container_stream(
+            BytesIO(migrated),
+            restored,
+            max_output_size=len(original),
+            **kwargs,
+        )
+        assert restored.getvalue() == original
+
+    with pytest.raises(ValueError):
+        restore_container_stream(
+            BytesIO(migrated),
+            BytesIO(),
+            max_output_size=len(original),
+            fido2_hmac_secret=setup["fido_secret"],
+        )
+
+
+def test_migration_rejects_tampered_final_record():
+    setup = make_setup(b"tamper detection during migration" * 100)
+    damaged = bytearray(setup["container"])
+    damaged[-1] ^= 1
+
+    with pytest.raises(ValueError):
+        migrate_container_stream(
+            BytesIO(bytes(damaged)),
+            BytesIO(),
+            recovery_secret=setup["recovery_secret"],
+            fido2_hmac_secret=b"U" * 32,
+        )

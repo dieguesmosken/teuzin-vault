@@ -17,6 +17,7 @@ from teuzin_vault.core.container_format import (
 from teuzin_vault.core.key_protection import (
     recover_dek_with_fido2,
     recover_dek_with_recovery,
+    reprotect_fido2_slot,
 )
 from teuzin_vault.core.key_slots import (
     SLOT_RECORD_SIZE,
@@ -56,6 +57,14 @@ class ContainerReadResult:
     original_bytes: int
     compressed_bytes: int
     data_record_count: int
+
+
+@dataclass(frozen=True)
+class ContainerMigrationResult:
+    original_bytes: int
+    compressed_bytes: int
+    data_record_count: int
+    container_bytes: int
 
 
 def _read_exact(source: BinaryIO, size: int) -> bytes:
@@ -394,3 +403,111 @@ def restore_container_stream(
         compressed_bytes=final_record.compressed_bytes,
         data_record_count=final_record.data_record_count,
     )
+
+
+def migrate_container_stream(
+    source: BinaryIO,
+    destination: BinaryIO,
+    *,
+    recovery_secret: bytes,
+    fido2_hmac_secret: bytes,
+) -> ContainerMigrationResult:
+    """Migrate a TVLT V1 container without re-encrypting its data records.
+
+    The DEK is recovered using the independent recovery slot. Only the
+    FIDO2 wrapping record is replaced. Header bytes, recovery record and
+    every authenticated data/final record are copied byte-for-byte.
+
+    The caller must write to a temporary destination and publish it only
+    after this function returns successfully.
+    """
+    if not hasattr(source, "read"):
+        raise TypeError("source must provide read().")
+    if not hasattr(destination, "write"):
+        raise TypeError("destination must provide write().")
+
+    parsed_header = _read_stream_header(source)
+    slot_count = len(parsed_header.header["key_slots"])
+    slot_data = _read_exact(source, slot_count * SLOT_RECORD_SIZE)
+
+    parsed_slots = parse_key_slot_records(slot_data, parsed_header)
+    if parsed_slots.consumed != len(slot_data):
+        raise ContainerStreamError("Invalid key slot section.")
+
+    # Recovery is deliberately required: an old FIDO2 HMAC value may differ
+    # once the authenticator is asked to enforce user verification.
+    dek = recover_dek_with_recovery(
+        parsed_header,
+        slot_data,
+        recovery_secret,
+    )
+
+    migrated_slots = reprotect_fido2_slot(
+        parsed_header,
+        slot_data,
+        dek,
+        fido2_hmac_secret=fido2_hmac_secret,
+    )
+
+    # Verify both independent unlocking paths before writing the output.
+    if recover_dek_with_recovery(
+        parsed_header,
+        migrated_slots,
+        recovery_secret,
+    ) != dek:
+        raise ContainerStreamError("Recovery slot changed during migration.")
+    if recover_dek_with_fido2(
+        parsed_header,
+        migrated_slots,
+        fido2_hmac_secret,
+    ) != dek:
+        raise ContainerStreamError("New FIDO2 slot failed verification.")
+
+    reader = RecordReader(dek, parsed_header)
+    header_bytes = parsed_header.prefix + parsed_header.raw_header
+    container_bytes = 0
+
+    _write_all(destination, header_bytes)
+    container_bytes += len(header_bytes)
+    _write_all(destination, migrated_slots)
+    container_bytes += len(migrated_slots)
+
+    while True:
+        record_header = _read_exact(source, RECORD_HEADER.size)
+        record_type, _, ciphertext_length = RECORD_HEADER.unpack(record_header)
+
+        if record_type == DATA_RECORD_TYPE:
+            if not MIN_DATA_CIPHERTEXT <= ciphertext_length <= MAX_DATA_CIPHERTEXT:
+                raise ContainerStreamError("Invalid data record length.")
+            ciphertext = _read_exact(source, ciphertext_length)
+            raw_record = record_header + ciphertext
+            authenticated = reader.read_data(raw_record)
+            if authenticated.consumed != len(raw_record):
+                raise ContainerStreamError("Invalid data record boundary.")
+            _write_all(destination, raw_record)
+            container_bytes += len(raw_record)
+            continue
+
+        if record_type == FINAL_RECORD_TYPE:
+            if ciphertext_length != FINAL_CIPHERTEXT_SIZE:
+                raise ContainerStreamError("Invalid final record length.")
+            ciphertext = _read_exact(source, ciphertext_length)
+            raw_record = record_header + ciphertext
+            final_record = reader.read_final(raw_record)
+
+            trailing = source.read(1)
+            if not isinstance(trailing, bytes):
+                raise ContainerStreamError("Input stream must return bytes.")
+            if trailing:
+                raise ContainerStreamError("Unexpected bytes after final record.")
+
+            _write_all(destination, raw_record)
+            container_bytes += len(raw_record)
+            return ContainerMigrationResult(
+                original_bytes=final_record.original_bytes,
+                compressed_bytes=final_record.compressed_bytes,
+                data_record_count=final_record.data_record_count,
+                container_bytes=container_bytes,
+            )
+
+        raise ContainerStreamError("Unknown record type.")

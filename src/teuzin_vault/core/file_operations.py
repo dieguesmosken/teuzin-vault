@@ -10,8 +10,10 @@ from typing import Callable, TypeVar
 
 from teuzin_vault.core.container_format import ParsedHeader
 from teuzin_vault.core.container_stream import (
+    ContainerMigrationResult,
     ContainerReadResult,
     ContainerWriteResult,
+    migrate_container_stream,
     restore_container_stream,
     write_container_stream,
 )
@@ -245,4 +247,48 @@ def restore_container_file(
             destination,
             overwrite,
             restore_operation,
+        )
+
+
+def migrate_container_file(
+    source_path: str | Path,
+    destination_path: str | Path,
+    *,
+    recovery_secret: bytes,
+    fido2_hmac_secret: bytes,
+    overwrite: bool = False,
+) -> ContainerMigrationResult:
+    """Create a migrated copy without modifying the source container.
+
+    The destination is published atomically only after all records have
+    authenticated and both replacement key slots have been verified.
+    """
+    source, destination = _validate_paths(
+        source_path,
+        destination_path,
+        overwrite,
+    )
+
+    with source.open("rb") as input_file:
+        before = _source_snapshot(input_file)
+
+        def migrate_operation(output):
+            result = migrate_container_stream(
+                input_file,
+                output,
+                recovery_secret=recovery_secret,
+                fido2_hmac_secret=fido2_hmac_secret,
+            )
+
+            after = _source_snapshot(input_file)
+            if after != before:
+                raise FileOperationError(
+                    "Container file changed during migration."
+                )
+            return result
+
+        return _run_with_temporary_file(
+            destination,
+            overwrite,
+            migrate_operation,
         )
