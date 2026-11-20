@@ -4,8 +4,8 @@ Aplicativo desktop open-source para compactação e proteção criptográfica de
 
 **Autor:** Matheus M. Diegues  
 **GitHub:** [@dieguesmosken](https://github.com/dieguesmosken)  
-**Projeto:** [site temporário no GitHub Pages](https://dieguesmosken.github.io/teuzin-vault/)  
-**Domínio planejado:** [vault.teuzin.com.br](https://vault.teuzin.com.br)
+**Site oficial:** [https://vault.teuzin.com.br](https://vault.teuzin.com.br)  
+**Código-fonte:** [github.com/dieguesmosken/teuzin-vault](https://github.com/dieguesmosken/teuzin-vault)
 
 > **Aviso:** o Teuzin Vault está em desenvolvimento experimental. Não utilize esta versão para proteger a única cópia de arquivos importantes ou backups críticos.
 
@@ -52,17 +52,19 @@ As etapas não possuem datas prometidas. Segurança, testes e compatibilidade t�
 
 ## Pesquisa técnica
 
-As oportunidades, referências e decisões em avaliação estão documentadas em [docs/TECHNICAL_RESEARCH.md](docs/TECHNICAL_RESEARCH.md).
+As oportunidades, referências e decisões em avaliação estão documentadas em [docs/TECHNICAL_RESEARCH.md](docs/TECHNICAL_RESEARCH.md).  
+O primeiro rascunho do modelo de ameaças está em [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md).  
+Os requisitos futuros de compatibilidade e migração Linux estão em [docs/PLATFORM_MIGRATION.md](docs/PLATFORM_MIGRATION.md).
 
 ## Site e atualizações
 
-O site temporário do projeto será publicado no GitHub Pages por GitHub Actions:
+O site oficial do projeto é publicado no GitHub Pages por GitHub Actions:
 
-- [Abrir site do Teuzin Vault](https://dieguesmosken.github.io/teuzin-vault/)
+- [Abrir site do Teuzin Vault](https://vault.teuzin.com.br/)
 - [Acompanhar o roadmap](ROADMAP.md)
 - [Ver alterações e marcos](https://github.com/dieguesmosken/teuzin-vault/commits/main)
 
-O domínio `vault.teuzin.com.br` será configurado em uma etapa posterior, quando a estrutura do site estiver consolidada.
+O domínio personalizado `vault.teuzin.com.br` está configurado com HTTPS obrigatório.
 
 ## Segurança
 

@@ -31,8 +31,10 @@ Criar um aplicativo desktop local, open-source e multiplataforma para compactar 
 
 <sub>Prioridade atual · antes de declarar o formato estável</sub>
 
-- [ ] Escrever um modelo de ameaças: dispositivo perdido, arquivo adulterado, malware local, extração interrompida e vazamento de metadados.
-- [ ] Revisar a política de User Verification do FIDO2 e testar PIN/UV em autenticadores reais.
+- [x] Publicar o rascunho inicial do modelo de ameaças, identificando ativos, adversários, controles existentes e lacunas.
+- [ ] Revisar o modelo com o mantenedor e validar os cenários e prioridades.
+- [ ] Decidir a política de User Verification (UV) e testar PIN/UV em autenticadores reais.
+- [ ] Testar o impacto de UV e não-UV no resultado HMAC-secret, incluindo a recuperação/reproteção de credenciais já registradas.
 - [ ] Confirmar o RP ID e as implicações de manter `vault.teuzin.com.br` como identidade da credencial.
 - [ ] Revisar limites de AES-GCM, contadores, quantidade de registros, bytes totais e ciclo de vida da DEK.
 - [ ] Decidir se o formato precisa de compartimentos extensíveis ou se a restrição FIDO2 + recuperação será mantida no V1.
@@ -115,7 +117,8 @@ Criar um aplicativo desktop local, open-source e multiplataforma para compactar 
 - [ ] Avaliar cofres divididos em volumes.
 - [ ] Avaliar backups incrementais e deduplicação, com análise explícita de vazamento de padrões.
 - [ ] Avaliar verificação, listagem e restauração seletiva sem extrair tudo.
-- [ ] Estabilizar domínio próprio e documentação pública.
+- [x] Publicar o site do projeto no GitHub Pages com domínio próprio e HTTPS.
+- [ ] Manter site, README, roadmap e documentação sincronizados a cada marco.
 
 ## Critérios para uma versão estável
 
@@ -135,3 +138,8 @@ Não serão prioridades para o V1: sincronização em nuvem, servidor de contas,
 ---
 
 **Como acompanhar:** cada marco concluído deve ter testes, revisão de arquivos/segredos, atualização deste roadmap e commit próprio no repositório.
+
+
+## Requisito futuro — migração Linux
+
+A migração de plataforma deverá preservar a experiência atual de downloads e a checagem antivírus automática. Os requisitos e candidatos avaliados estão em [docs/PLATFORM_MIGRATION.md](docs/PLATFORM_MIGRATION.md). Essa trilha é planejamento futuro e não altera a prioridade atual do núcleo do Teuzin Vault.

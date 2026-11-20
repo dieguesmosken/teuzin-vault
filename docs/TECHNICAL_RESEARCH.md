@@ -42,7 +42,11 @@ A RFC 9106 descreve Argon2id e fornece opções de referência (2 GiB com uma pa
 
 ### 2.3 Política de User Verification no FIDO2
 
-O adaptador atual chama `authenticate_begin(..., user_verification="discouraged")`. Isso não deve ser tratado como uma decisão definitiva de segurança. Precisamos definir se a posse física/toque é suficiente ou se a operação deve exigir UV (por exemplo, PIN ou biometria), verificar como Windows WebAuthn e cada autenticador aplicam a política e testar o comportamento real.
+O adaptador atual chama `authenticate_begin(..., user_verification="discouraged")`. Isso não deve ser tratado como uma decisão definitiva de segurança. Na semântica WebAuthn, `discouraged` indica que a aplicação não deseja UV; `preferred` solicita UV quando possível, sem falhar se ela não ocorrer; `required` exige UV e falha quando ela não pode ser realizada.
+
+**Detalhe crítico para o HMAC-secret:** o CTAP 2.3 determina que o autenticador escolha `CredRandomWithUV` ou `CredRandomWithoutUV` de acordo com o bit UV da resposta. Portanto, a mesma credencial e o mesmo salt podem produzir saídas diferentes conforme a verificação tenha ocorrido. Mudar a política de UV não é apenas uma mudança de interface: pode mudar a chave HKDF que protege o compartimento FIDO2 e impedir a abertura de cofres existentes caso a migração não seja planejada. Antes de alterar a política, precisamos testar no autenticador real, documentar qual modo foi usado e implementar um procedimento de recuperação/reproteção usando o compartimento independente de recuperação.
+
+A constante `ORIGIN` também está declarada no adaptador atual, mas não é usada diretamente na construção do `Fido2Server`. Isso não prova uma falha: precisamos verificar o comportamento padrão da versão instalada de python-fido2 e explicitar a política de origem/RP antes de estabilizar a integração.
 
 O HMAC-secret é um segredo simétrico vinculado à credencial. Aplicativos nativos precisam cuidar de separação de domínio, uso exclusivo do resultado, vida útil curta do material sensível e limpeza de memória sempre que tecnicamente possível. Em Python, objetos `bytes` imutáveis e o gerenciamento de memória do runtime impedem prometer apagamento garantido; isso precisa constar no modelo de ameaças.
 
@@ -147,3 +151,14 @@ Para a interface, as operações de I/O e criptografia devem ficar fora da threa
 ## 8. Conclusão da pesquisa
 
 A melhor evolução não é adicionar o máximo de opções agora. É congelar um formato bem definido, criar a interface para o fluxo simples de arquivo individual, finalizar a recuperação, adicionar suporte seguro a pastas e só depois otimizar compressão e recursos avançados com benchmarks e testes. A revisão independente deve acontecer antes de divulgar uma versão estável.
+
+
+### 2.6 Registro de decisões FIDO2 pendentes
+
+- Não alterar imediatamente `discouraged` para `required`: o HMAC-secret seleciona material diferente dependendo do UV flag, conforme o CTAP 2.3.
+- Definir se a política do Teuzin Vault será obrigatória, preferencial ou configurável por credencial/contêiner, sem introduzir uma combinação que torne a recuperação confusa.
+- Testar o autenticador real nos modos com e sem UV, com o mesmo salt e credencial, e provar que a recuperação independente permite reempacotar o compartimento FIDO2 quando necessário.
+- Especificar como registrar uma credencial nova, verificar a compatibilidade da extensão e fazer backup seguro dos metadados públicos.
+- Conferir os defaults de origem da versão de python-fido2 usada e remover ou usar explicitamente a constante ORIGIN.
+
+Essas decisões pertencem ao Marco 1 e devem ser resolvidas antes de congelar o formato.
