@@ -7,16 +7,16 @@
     BlinkMacSystemFont,
     'Segoe UI',
     sans-serif;
-  color: #F0EAF8;
-  background: #0B0812;
+  color: #f0eaf8;
+  background: #0b0812;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  --bg: #0B0812;
+  --bg: #0b0812;
   --panel: #191c18;
-  --line: #33243F;
-  --muted: #A99BB8;
-  --paper: #F1ECF8;
-  --accent: #A78BFA;
+  --line: #33243f;
+  --muted: #a99bb8;
+  --paper: #f1ecf8;
+  --accent: #a78bfa;
   --mono: ui-monospace, 'Cascadia Code', 'Segoe UI Mono', monospace;
 }
 * {
@@ -44,8 +44,8 @@ a {
   left: 1rem;
   z-index: 100;
   padding: 1rem;
-  color: #0B0812;
-  background: #F5F0FA;
+  color: #0b0812;
+  background: #f5f0fa;
   transform: translateY(-200%);
 }
 .skip:focus {
@@ -84,7 +84,7 @@ a {
   display: flex;
   align-items: center;
   gap: 30px;
-  color: #C4B8D3;
+  color: #c4b8d3;
   font-size: 0.78rem;
 }
 .topbar nav a:hover,
@@ -92,7 +92,7 @@ a {
   color: var(--accent);
 }
 .topbar .nav-github {
-  border: 1px solid #59436D;
+  border: 1px solid #59436d;
   padding: 10px 15px;
   color: var(--paper);
 }
@@ -114,9 +114,9 @@ a {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #B794F6;
+  background: #b794f6;
   margin-right: 9px;
-  box-shadow: 0 0 0 4px #B794F61C;
+  box-shadow: 0 0 0 4px #b794f61c;
 }
 h1,
 h2,
@@ -140,7 +140,7 @@ h2 em {
 .intro {
   font-size: 1.05rem;
   line-height: 1.85;
-  color: #BDB0CD;
+  color: #bdb0cd;
   max-width: 570px;
 }
 .hero-actions {
@@ -156,7 +156,7 @@ h2 em {
   padding: 14px 18px;
   font-size: 0.78rem;
   font-weight: 700;
-  border: 1px solid #59436D;
+  border: 1px solid #59436d;
   transition:
     transform 0.2s,
     border-color 0.2s;
@@ -179,11 +179,11 @@ h2 em {
   flex-wrap: wrap;
   font: 0.59rem var(--mono);
   letter-spacing: 0.09em;
-  color: #9B87B3;
+  color: #9b87b3;
 }
 .product-panel {
-  background: linear-gradient(145deg, #21172D, #100B18);
-  border: 1px solid #49345F;
+  background: linear-gradient(145deg, #21172d, #100b18);
+  border: 1px solid #49345f;
   min-height: 470px;
   padding: 22px 24px;
   position: relative;
@@ -193,7 +193,7 @@ h2 em {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(130deg, transparent 45%, #A78BFA0D);
+  background: linear-gradient(130deg, transparent 45%, #a78bfa0d);
   pointer-events: none;
 }
 .panel-top,
@@ -203,16 +203,16 @@ h2 em {
   gap: 12px;
   font: 0.61rem var(--mono);
   letter-spacing: 0.09em;
-  color: #B7A9C8;
+  color: #b7a9c8;
 }
 .panel-state {
-  color: #D0B8F5;
+  color: #d0b8f5;
 }
 .panel-state i {
   display: inline-block;
   width: 6px;
   height: 6px;
-  background: #B794F6;
+  background: #b794f6;
   border-radius: 50%;
   margin-right: 6px;
 }
@@ -224,7 +224,7 @@ h2 em {
 }
 .orbit {
   position: absolute;
-  border: 1px solid #A78BFA40;
+  border: 1px solid #a78bfa40;
   border-radius: 50%;
   width: 245px;
   height: 245px;
@@ -238,13 +238,13 @@ h2 em {
 .vault-core {
   width: 112px;
   height: 112px;
-  border: 1px solid #C4A7FF;
+  border: 1px solid #c4a7ff;
   border-radius: 50%;
   display: grid;
   place-items: center;
   color: var(--accent);
-  background: #A78BFA0C;
-  box-shadow: 0 0 70px #A78BFA24;
+  background: #a78bfa0c;
+  box-shadow: 0 0 70px #a78bfa24;
 }
 .vault-core svg {
   width: 72px;
@@ -256,7 +256,7 @@ h2 em {
   color: #c3c7b9;
   background: #191122;
   padding: 7px 9px;
-  border: 1px solid #513A69;
+  border: 1px solid #513a69;
 }
 .label-key {
   top: 34px;
@@ -271,7 +271,7 @@ h2 em {
   bottom: 42px;
 }
 .panel-bottom {
-  border-top: 1px solid #3C2A4D;
+  border-top: 1px solid #3c2a4d;
   padding-top: 17px;
 }
 .panel-bottom div {
@@ -280,7 +280,7 @@ h2 em {
 }
 .panel-bottom small {
   font-size: 0.53rem;
-  color: #C0B2D2;
+  color: #c0b2d2;
 }
 .panel-bottom strong {
   font: 0.66rem var(--mono);
@@ -290,9 +290,9 @@ h2 em {
   display: flex;
   align-items: center;
   gap: 16px;
-  border-block: 1px solid #503A65;
+  border-block: 1px solid #503a65;
   padding: 20px 0;
-  color: #D1C4DF;
+  color: #d1c4df;
   font-size: 0.77rem;
 }
 .notice p {
@@ -301,7 +301,7 @@ h2 em {
   line-height: 1.7;
 }
 .notice b {
-  color: #E3D2FF;
+  color: #e3d2ff;
 }
 .notice a {
   white-space: nowrap;
@@ -311,7 +311,7 @@ h2 em {
 .notice-mark {
   width: 25px;
   height: 25px;
-  border: 1px solid #A78BFA;
+  border: 1px solid #a78bfa;
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -366,7 +366,7 @@ h2 em {
 }
 .section-dark {
   background: #191d17;
-  border-block: 1px solid #30213F;
+  border-block: 1px solid #30213f;
 }
 .flow {
   display: grid;
@@ -377,8 +377,8 @@ h2 em {
 .flow-node {
   min-height: 135px;
   padding: 18px;
-  border: 1px solid #513A69;
-  background: #1B1327;
+  border: 1px solid #513a69;
+  background: #1b1327;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -392,10 +392,10 @@ h2 em {
 }
 .flow-node small {
   font: 0.59rem var(--mono);
-  color: #C0B2D2;
+  color: #c0b2d2;
 }
 .flow-final {
-  border-color: #B794F6;
+  border-color: #b794f6;
   background: #29261d;
 }
 .flow-arrow {
@@ -429,7 +429,7 @@ h2 em {
   background: var(--accent);
 }
 .path-alt {
-  background: #C084FC;
+  background: #c084fc;
 }
 .split {
   display: grid;
@@ -448,7 +448,7 @@ h2 em {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #A58BBE;
+  background: #a58bbe;
 }
 .status.current {
   background: var(--accent);
@@ -473,8 +473,8 @@ h2 em {
 .closing {
   margin-top: 100px;
   padding: 40px;
-  border: 1px solid #563D70;
-  background: linear-gradient(110deg, #1D1428, #120D19);
+  border: 1px solid #563d70;
+  background: linear-gradient(110deg, #1d1428, #120d19);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -511,7 +511,7 @@ h2 em {
 }
 .footer small {
   grid-column: 1/-1;
-  color: #9284A6;
+  color: #9284a6;
   font-size: 0.65rem;
 }
 .brand-mark.small {
