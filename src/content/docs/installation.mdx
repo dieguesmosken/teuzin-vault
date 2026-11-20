@@ -1,0 +1,40 @@
+---
+title: Instalação e desenvolvimento
+description: Como preparar o ambiente de desenvolvimento do Teuzin Vault.
+---
+
+# Instalação
+
+O projeto está em desenvolvimento experimental. Estas instruções são para desenvolvedores e testes controlados.
+
+## Requisitos
+
+- Windows 10/11 ou Linux compatível com Python.
+- Python 3.14 ou superior.
+- Git.
+- Um autenticador FIDO2 compatível com HMAC-secret para testar o fluxo físico.
+- Node.js 22.23.4 ou superior apenas para contribuir com o site.
+
+## Obter o código
+
+```powershell
+git clone https://github.com/dieguesmosken/teuzin-vault.git
+cd teuzin-vault
+py -3.14 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -e ".[dev]"
+pytest -q
+```
+
+## Iniciar a interface
+
+```powershell
+python -m teuzin_vault.main
+```
+
+A interface atual oferece restauração de arquivos individuais. A criação de cofres e o suporte a pastas ainda não estão disponíveis pela interface.
+
+## Aviso
+
+Não teste com a única cópia de arquivos importantes. Use dados descartáveis e mantenha cópias independentes.
