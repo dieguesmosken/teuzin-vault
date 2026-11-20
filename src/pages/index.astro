@@ -1,0 +1,346 @@
+---
+import '../styles/site.css';
+const year = new Date().getFullYear();
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111310" />
+    <meta
+      name="description"
+      content="Teuzin Vault — aplicativo desktop experimental para proteger arquivos localmente com criptografia autenticada, FIDO2 e recuperação independente."
+    />
+    <meta property="og:title" content="Teuzin Vault — Proteção local, sob seu controle" />
+    <meta
+      property="og:description"
+      content="Criptografia local, autenticação física e recuperação independente. Conheça a arquitetura e acompanhe o desenvolvimento."
+    />
+    <title>Teuzin Vault — Proteção local, sob seu controle</title>
+  </head>
+  <body>
+    <a class="skip" href="#main">
+      Pular para o conteúdo
+    </a>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Teuzin Vault, início">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40">
+            <path
+              d="M20 3 34 9v10c0 9-5.8 14.6-14 18C11.8 33.6 6 28 6 19V9L20 3Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+            />
+            <path
+              d="M14 17.5 18.2 22 27 13"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </span>
+        <span>
+          TEUZIN <b>VAULT</b>
+        </span>
+      </a>
+      <nav aria-label="Navegação principal">
+        <a href="#principios">Princípios</a>
+        <a href="#fluxo">Como funciona</a>
+        <a href="/docs/">Documentação</a>
+        <a href="https://github.com/dieguesmosken/teuzin-vault" class="nav-github">
+          GitHub ↗
+        </a>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="hero shell">
+        <div class="hero-copy">
+          <p class="kicker">
+            <span class="live-dot" aria-hidden="true"></span> SOFTWARE LIVRE · DESENVOLVIMENTO
+            EXPERIMENTAL
+          </p>
+          <h1>
+            Seus arquivos.
+            <br />
+            <em>Sua chave.</em>
+            <br />
+            Seu controle.
+          </h1>
+          <p class="intro">
+            Um cofre de arquivos local, criado para manter o processo de proteção e recuperação nas
+            suas mãos — sem depender de uma conta ou de um serviço de armazenamento em nuvem.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://github.com/dieguesmosken/teuzin-vault">
+              Explorar o código <span>↗</span>
+            </a>
+            <a class="button button-quiet" href="/docs/">
+              Ler a documentação <span>→</span>
+            </a>
+          </div>
+          <div class="hero-meta">
+            <span>PYTHON · PYSIDE6</span>
+            <span>AES-256-GCM</span>
+            <span>FIDO2 / HMAC-SECRET</span>
+          </div>
+        </div>
+        <div
+          class="product-panel"
+          role="group"
+          aria-label="Ilustração conceitual do fluxo de proteção"
+        >
+          <div class="panel-top">
+            <span>TV / LOCAL VAULT</span>
+            <span class="panel-state">
+              <i aria-hidden="true"></i> LOCAL-FIRST
+            </span>
+          </div>
+          <div class="vault-graphic">
+            <div class="orbit orbit-one" aria-hidden="true"></div>
+            <div class="orbit orbit-two" aria-hidden="true"></div>
+            <div class="vault-core">
+              <svg viewBox="0 0 80 80" aria-hidden="true">
+                <path
+                  d="M40 8 65 18v18c0 17-10 28-25 36C25 64 15 53 15 36V18L40 8Z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <rect
+                  x="29"
+                  y="35"
+                  width="22"
+                  height="17"
+                  rx="4"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <path
+                  d="M34 35v-5a6 6 0 0 1 12 0v5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+              </svg>
+            </div>
+            <span class="orbit-label label-key">CHAVE LOCAL</span>
+            <span class="orbit-label label-device">FIDO2</span>
+            <span class="orbit-label label-recovery">RECUPERAÇÃO</span>
+          </div>
+          <div class="panel-bottom">
+            <div>
+              <small>PROTEÇÃO</small>
+              <strong>Autenticada</strong>
+            </div>
+            <div>
+              <small>ARMAZENAMENTO</small>
+              <strong>No seu dispositivo</strong>
+            </div>
+            <div>
+              <small>CONTROLE</small>
+              <strong>Seu, do início ao fim</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="notice shell">
+        <span class="notice-mark" aria-hidden="true">
+          !
+        </span>
+        <p>
+          <b>Projeto experimental.</b> O Teuzin Vault ainda não passou por auditoria independente.
+          Não o utilize como única cópia de arquivos importantes ou backups críticos.
+        </p>
+        <a href="/docs/security/">Entenda os limites ↗</a>
+      </section>
+      <section id="principios" class="section shell">
+        <div class="section-heading">
+          <p class="kicker">01 / PRINCÍPIOS DE PROJETO</p>
+          <h2>
+            Segurança não é um adjetivo.
+            <br />
+            <em>É uma série de decisões verificáveis.</em>
+          </h2>
+        </div>
+        <div class="principles">
+          <article>
+            <span class="index">01</span>
+            <h3>Criptografia autenticada</h3>
+            <p>
+              O núcleo utiliza AES-256-GCM para proteger dados e detectar alterações nos registros
+              criptografados.
+            </p>
+          </article>
+          <article>
+            <span class="index">02</span>
+            <h3>Autenticador físico</h3>
+            <p>
+              FIDO2 com extensão HMAC-secret e verificação do usuário obrigatória no fluxo validado
+              em hardware.
+            </p>
+          </article>
+          <article>
+            <span class="index">03</span>
+            <h3>Recuperação independente</h3>
+            <p>
+              Um compartimento separado permite recuperar a chave de dados sem depender do
+              autenticador físico.
+            </p>
+          </article>
+          <article>
+            <span class="index">04</span>
+            <h3>Processamento local</h3>
+            <p>
+              O objetivo é proteger e restaurar arquivos no próprio dispositivo, sem conta ou
+              serviço de nuvem obrigatório.
+            </p>
+          </article>
+        </div>
+      </section>
+      <section id="fluxo" class="section section-dark">
+        <div class="shell">
+          <div class="section-heading">
+            <p class="kicker">02 / ARQUITETURA EM RESUMO</p>
+            <h2>
+              Do arquivo ao cofre.
+              <br />
+              <em>Com caminhos de acesso independentes.</em>
+            </h2>
+          </div>
+          <div class="flow">
+            <div class="flow-node">
+              <span>01</span>
+              <b>Arquivo local</b>
+              <small>Origem dos dados</small>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">
+              →
+            </div>
+            <div class="flow-node">
+              <span>02</span>
+              <b>Compactação</b>
+              <small>Zstandard em fluxo</small>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">
+              →
+            </div>
+            <div class="flow-node">
+              <span>03</span>
+              <b>Criptografia</b>
+              <small>AES-256-GCM</small>
+            </div>
+            <div class="flow-arrow" aria-hidden="true">
+              →
+            </div>
+            <div class="flow-node flow-final">
+              <span>04</span>
+              <b>Contêiner TVLT</b>
+              <small>Dados protegidos</small>
+            </div>
+          </div>
+          <div class="access-paths">
+            <div>
+              <span class="path-line" aria-hidden="true"></span>
+              <b>Desbloqueio FIDO2</b>
+              <small>Autenticador físico + verificação do usuário</small>
+            </div>
+            <div>
+              <span class="path-line path-alt" aria-hidden="true"></span>
+              <b>Recuperação independente</b>
+              <small>Segredo de recuperação guardado offline</small>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section shell">
+        <div class="split">
+          <div>
+            <p class="kicker">03 / ESTADO DO PROJETO</p>
+            <h2>
+              Construído em público.
+              <br />
+              <em>Sem prometer o que ainda não existe.</em>
+            </h2>
+          </div>
+          <div class="status-list">
+            <div>
+              <span class="status done" aria-hidden="true"></span>
+              <div>
+                <b>Núcleo criptográfico inicial</b>
+                <small>Implementado e coberto por testes automatizados.</small>
+              </div>
+              <strong>CONCLUÍDO</strong>
+            </div>
+            <div>
+              <span class="status done" aria-hidden="true"></span>
+              <div>
+                <b>FIDO2 com UV e migração de slot</b>
+                <small>Teste integrado com Yubico em dispositivo real.</small>
+              </div>
+              <strong>VALIDADO</strong>
+            </div>
+            <div>
+              <span class="status current" aria-hidden="true"></span>
+              <div>
+                <b>Interface desktop</b>
+                <small>
+                  Restauração de arquivos individuais disponível; criação de cofres ainda em
+                  desenvolvimento.
+                </small>
+              </div>
+              <strong>EM ANDAMENTO</strong>
+            </div>
+            <div>
+              <span class="status pending" aria-hidden="true"></span>
+              <div>
+                <b>Pastas e distribuição</b>
+                <small>Manifesto, extração segura e empacotamento ainda planejados.</small>
+              </div>
+              <strong>PLANEJADO</strong>
+            </div>
+          </div>
+        </div>
+        <div class="closing">
+          <div>
+            <p class="kicker">CÓDIGO ABERTO · APACHE-2.0</p>
+            <h2>Veja como está sendo feito.</h2>
+            <p>
+              Consulte o código, acompanhe as decisões técnicas e leia os avisos de licença e
+              atribuição.
+            </p>
+          </div>
+          <div class="closing-actions">
+            <a class="button button-primary" href="https://github.com/dieguesmosken/teuzin-vault">
+              GitHub ↗
+            </a>
+            <a class="button button-quiet" href="/docs/licensing/">
+              Licenças e créditos →
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer shell">
+      <a class="brand" href="/">
+        <span class="brand-mark small">TV</span>
+        <span>
+          TEUZIN <b>VAULT</b>
+        </span>
+      </a>
+      <p>
+        Projeto criado por Matheus M. Diegues · <a href="/docs/">Documentação</a> ·{' '}
+        <a href="https://github.com/dieguesmosken/teuzin-vault">GitHub</a>
+      </p>
+      <small>
+        © {year} Matheus M. Diegues · Código original sob Apache-2.0. Marcas e dependências de
+        terceiros pertencem aos respectivos titulares.
+      </small>
+    </footer>
+  </body>
+</html>

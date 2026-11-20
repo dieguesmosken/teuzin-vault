@@ -20,6 +20,7 @@ A prioridade é preservar a verificação pelo Kaspersky, não necessariamente p
 O site oficial do FDM lista atualmente versão Linux, com pacote DEB e distribuição pelo Flathub. A página também lista extensões oficiais para Chrome e Firefox.
 
 **O que ainda precisa ser testado na distribuição Linux escolhida:**
+
 - instalação e atualização;
 - captura de downloads pelo Chrome;
 - integração com Edge (não assumir compatibilidade sem teste);
@@ -36,6 +37,7 @@ Referência: [Free Download Manager — download oficial](https://www.freedownlo
 O aria2 é uma alternativa open-source para o motor de downloads. A documentação oficial descreve o evento --on-download-complete, executado após a conclusão do download, e os argumentos fornecidos ao hook incluem GID, número de arquivos e caminho.
 
 Uma composição possível:
+
 - aria2 como motor;
 - AriaNg como interface de gerenciamento;
 - extensão/conector compatível com o navegador para enviar downloads;
@@ -44,6 +46,7 @@ Uma composição possível:
 O serviço de integração precisa tratar o caminho do arquivo como dado não confiável. Não deve concatenar o caminho numa string de shell; deve invocar processos com argumentos separados e validar a identidade do arquivo.
 
 Referências:
+
 - [aria2 — documentação oficial e event hooks](https://aria2.github.io/manual/en/html/aria2c.html).
 - [AriaNg — interface open-source](https://github.com/mayswind/AriaNg).
 - [aria2 — repositório](https://github.com/aria2/aria2).
@@ -55,10 +58,12 @@ A Kaspersky anunciou uma versão doméstica para Linux em 3 de novembro de 2025 
 A Kaspersky informa que o produto doméstico para Linux monitora o sistema e dispositivos e verifica arquivos, pastas e aplicações. A existência de um comando CLI suportado para verificar um arquivo individual, a possibilidade de ser chamado por um hook e o comportamento de quarentena precisam ser confirmados na versão instalada e na licença do usuário.
 
 Não assumir que ferramentas diferentes da Kaspersky são equivalentes:
+
 - O KVRT para Linux é uma ferramenta portátil de verificação sob demanda.
 - A própria Kaspersky informa que o KVRT Linux não oferece atualização automática de bases nem agendamento de análises; portanto, não é o candidato preferencial para a verificação automática de cada download.
 
 Referências:
+
 - [Kaspersky for Linux — anúncio para usuários domésticos](https://www.kaspersky.com/blog/kaspersky-for-linux/54697/).
 - [Kaspersky for Linux — produto e requisitos](https://www.kaspersky.com/linux-antivirus).
 - [KVRT for Linux — limitações e modo de uso](https://www.kaspersky.com/blog/kvrt-for-linux/51375/).

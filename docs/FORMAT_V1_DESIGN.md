@@ -17,10 +17,10 @@ Todos os inteiros binários utilizarão big-endian.
 
 ## 2. Prefixo fixo
 
-| Campo | Tamanho |
-|---|---:|
-| Magic TVLT | 4 bytes |
-| Versão | 2 bytes |
+| Campo                    | Tamanho |
+| ------------------------ | ------: |
+| Magic TVLT               | 4 bytes |
+| Versão                   | 2 bytes |
 | Comprimento do cabeçalho | 4 bytes |
 
 O comprimento máximo do cabeçalho será 64 KiB.
@@ -32,6 +32,7 @@ Versões desconhecidas serão rejeitadas.
 O cabeçalho será JSON UTF-8 determinístico.
 
 Regras:
+
 - Chaves ordenadas.
 - Sem espaços desnecessários.
 - Sem chaves duplicadas.
@@ -40,6 +41,7 @@ Regras:
 - Validação rigorosa dos tipos e tamanhos.
 
 O cabeçalho conterá:
+
 - Identificador aleatório do contêiner.
 - Algoritmos e suas versões.
 - Tamanho máximo dos blocos.
@@ -62,6 +64,7 @@ Cada contêiner terá uma DEK aleatória de 32 bytes.
 A DEK será protegida por compartimentos independentes.
 
 Cada compartimento possuirá:
+
 - Identificador aleatório de 16 bytes.
 - Tipo de mecanismo.
 - Parâmetros públicos de derivação.
@@ -80,6 +83,7 @@ Isso evita dependência circular ao calcular a autenticação.
 ## 5. Compartimento FIDO2
 
 O mecanismo FIDO2 utilizará:
+
 - RP ID configurado do projeto.
 - Credential ID necessário para localizar a credencial.
 - HMAC-secret.
@@ -123,6 +127,7 @@ Cada registro de proteção terá:
 Tamanho fixo: 76 bytes por registro.
 
 A autenticação incluirá:
+
 - Domínio de separação do mecanismo.
 - Digest do prefixo e cabeçalho.
 - Descritor original do compartimento.
@@ -135,13 +140,14 @@ Tamanho máximo inicial de dados por bloco: 1 MiB.
 
 Cada registro terá um cabeçalho binário:
 
-| Campo | Tamanho |
-|---|---:|
-| Tipo do registro | 1 byte |
-| Sequência | 8 bytes |
+| Campo                     | Tamanho |
+| ------------------------- | ------: |
+| Tipo do registro          |  1 byte |
+| Sequência                 | 8 bytes |
 | Comprimento do ciphertext | 4 bytes |
 
 O ciphertext terá:
+
 - Dados criptografados.
 - Tag AES-GCM de 16 bytes.
 
@@ -173,6 +179,7 @@ reutilizando a mesma DEK e contadores.
 ## 10. Dados autenticados (AAD)
 
 Cada registro de dados autenticarará:
+
 - Domínio de separação da versão.
 - Digest do prefixo e cabeçalho.
 - Cabeçalho binário do registro.
@@ -211,6 +218,7 @@ Total: 28 bytes.
 O registro final será criptografado e autenticado.
 
 O leitor deverá rejeitar:
+
 - Arquivo sem registro final.
 - Sequência incompleta.
 - Contagem divergente.
@@ -241,6 +249,7 @@ suportada pelo sistema.
 ## 14. Limites obrigatórios
 
 A implementação deverá validar:
+
 - Comprimento do cabeçalho.
 - Quantidade de compartimentos.
 - Tamanho de cada registro.
@@ -258,6 +267,7 @@ compactado e criptografado.
 O manifesto conterá nomes relativos, tamanhos e tipos de entrada.
 
 A extração deverá rejeitar:
+
 - Caminhos absolutos.
 - Caminhos que escapem da pasta de destino.
 - Traversal com .. .
@@ -274,6 +284,7 @@ Este documento não representa uma implementação pronta
 ou uma auditoria criptográfica.
 
 O formato somente será estabilizado após:
+
 - Testes completos.
 - Testes de interoperabilidade.
 - Testes de falhas e truncamento.

@@ -7,6 +7,7 @@
 ## 1. O que foi observado no código atual
 
 A primeira versão pública já tem:
+
 - AES-256-GCM por registro, com AAD derivado do cabeçalho e metadados do registro.
 - DEK aleatória e compartimentos autenticados para FIDO2/HMAC-secret e recuperação.
 - HKDF-SHA256 com rótulos de finalidade diferentes.
@@ -15,6 +16,7 @@ A primeira versão pública já tem:
 - Adaptador FIDO2 inicial limitado ao Windows.
 
 Ainda não estão completos:
+
 - UI além da janela inicial.
 - Fluxo de criação/registro de novo autenticador pela interface.
 - Apresentação e armazenamento orientado do segredo de recuperação.
@@ -59,6 +61,7 @@ O autenticador guarda a credencial no escopo do RP ID. Mudar de `vault.teuzin.co
 AES-256-GCM é um AEAD amplamente utilizado e o código já usa nonces de 96 bits com contador por contêiner. A revisão deve confirmar unicidade, limite de bytes/registros por chave, comportamento em falhas e nunca retomar uma operação com a mesma DEK e contadores potencialmente reutilizados.
 
 Duas alternativas merecem benchmark e análise antes de congelar o formato:
+
 - **XChaCha20-Poly1305 / libsodium secretstream:** a API secretstream fornece tags de fim de fluxo, detecção de truncamento/reordenação e rekeying automático, sendo desenhada para streams de tamanho grande.
 - **AES-GCM-SIV:** especificado na RFC 8452, reduz o impacto catastrófico de repetição acidental de nonce, com custo adicional de desempenho e diferenças de implementação.
 
@@ -69,12 +72,14 @@ Não misturar algoritmos silenciosamente dentro do V1. Qualquer mudança exige i
 A implementação de streaming atual já ativa `checksum_flag`, impõe uma janela máxima na descompressão e rejeita quadros incompletos ou dados posteriores. É uma boa base conservadora.
 
 O módulo `compression.zstd` da biblioteca padrão do Python (disponível desde Python 3.14) expõe opções avançadas:
+
 - Níveis de compressão e estratégias com diferentes trocas entre velocidade e taxa.
 - `nb_workers` para compressão multithread, aumentando velocidade potencial, memória usada e, em alguns casos, reduzindo um pouco a taxa.
 - Long-distance matching para entradas grandes, com impacto de memória e janela.
 - Treinamento de dicionários, útil sobretudo em lotes de dados pequenos e semelhantes.
 
 **Plano de desempenho recomendado:**
+
 1. Criar corpus de benchmark (texto, código, PDF, imagens, vídeos, ZIP/7z, binários e dados aleatórios).
 2. Comparar níveis baixo, padrão e alto.
 3. Medir tempo, memória máxima, CPU e tamanho final.
@@ -94,6 +99,7 @@ O formato Seekable Zstandard divide o fluxo em quadros independentes e registra 
 O manifesto de arquivos e diretórios deve permanecer dentro do fluxo criptografado. Caminhos e nomes expostos no cabeçalho podem revelar informação privada.
 
 Na extração, validar cada entrada antes de criar qualquer arquivo:
+
 - aceitar somente caminhos relativos normalizados;
 - rejeitar caminhos absolutos, componentes `..`, UNC e caminhos que escapem do destino;
 - definir política para links simbólicos, junctions/reparse points e arquivos especiais;
@@ -106,24 +112,25 @@ A função atual de arquivo individual já tenta impedir links simbólicos e pub
 
 ## 5. Ideias de funcionalidades
 
-| Ideia | Benefício | Prioridade sugerida |
-|---|---|---|
-| Verificar integridade do cofre | Permite testar sem substituir arquivos restaurados | Alta |
-| Progresso e cancelamento seguro | UX para arquivos grandes | Alta |
-| Segundo autenticador físico | Reduz risco de perda da chave principal | Alta |
-| Rotação/adição de compartimentos | Atualiza acessos sem recriptografar todo o conteúdo, se o formato permitir | Média |
-| Senha opcional com Argon2id | Alternativa ao hardware | Média |
-| Perfis de compressão | Ajusta velocidade e tamanho | Média |
-| Restauração seletiva | Recupera apenas alguns arquivos | Média |
-| Quadros seekable | Acesso parcial e recuperação mais rápida | Média/baixa |
-| Backup incremental/deduplicação | Economiza espaço em conjuntos grandes | Baixa; envolve riscos de privacidade |
-| Volumes divididos | Facilita mídias com limite de tamanho | Baixa |
+| Ideia                            | Benefício                                                                  | Prioridade sugerida                  |
+| -------------------------------- | -------------------------------------------------------------------------- | ------------------------------------ |
+| Verificar integridade do cofre   | Permite testar sem substituir arquivos restaurados                         | Alta                                 |
+| Progresso e cancelamento seguro  | UX para arquivos grandes                                                   | Alta                                 |
+| Segundo autenticador físico      | Reduz risco de perda da chave principal                                    | Alta                                 |
+| Rotação/adição de compartimentos | Atualiza acessos sem recriptografar todo o conteúdo, se o formato permitir | Média                                |
+| Senha opcional com Argon2id      | Alternativa ao hardware                                                    | Média                                |
+| Perfis de compressão             | Ajusta velocidade e tamanho                                                | Média                                |
+| Restauração seletiva             | Recupera apenas alguns arquivos                                            | Média                                |
+| Quadros seekable                 | Acesso parcial e recuperação mais rápida                                   | Média/baixa                          |
+| Backup incremental/deduplicação  | Economiza espaço em conjuntos grandes                                      | Baixa; envolve riscos de privacidade |
+| Volumes divididos                | Facilita mídias com limite de tamanho                                      | Baixa                                |
 
 Deduplicação merece cautela: deduplicar com base em hashes ou identificadores previsíveis pode revelar que dois arquivos são iguais. Uma solução criptográfica de deduplicação exige threat model próprio; não deve ser adicionada como otimização simples.
 
 ## 6. Testes e qualidade
 
 Expandir os 132 testes atuais com:
+
 - fuzzing do cabeçalho JSON, parsers binários, registros e manifesto;
 - testes de truncamento em cada byte de cabeçalho/registro;
 - adulteração, reordenação, duplicação, remoção e concatenação de registros;
@@ -151,7 +158,6 @@ Para a interface, as operações de I/O e criptografia devem ficar fora da threa
 ## 8. Conclusão da pesquisa
 
 A melhor evolução não é adicionar o máximo de opções agora. É congelar um formato bem definido, criar a interface para o fluxo simples de arquivo individual, finalizar a recuperação, adicionar suporte seguro a pastas e só depois otimizar compressão e recursos avançados com benchmarks e testes. A revisão independente deve acontecer antes de divulgar uma versão estável.
-
 
 ### 2.6 Registro de decisões FIDO2 pendentes
 

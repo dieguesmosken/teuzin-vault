@@ -78,3 +78,7 @@ id_ed25519
 *.ppk
 id_rsa
 id_ed25519
+
+# Astro / Node website build
+node_modules/
+.astro/
