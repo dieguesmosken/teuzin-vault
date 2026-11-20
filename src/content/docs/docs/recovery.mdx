@@ -1,0 +1,24 @@
+---
+title: Recuperação
+description: Como os caminhos FIDO2 e recuperação se relacionam.
+---
+
+# Recuperação independente
+
+O contêiner mantém dois compartimentos de chave independentes que protegem a mesma chave de dados.
+
+## FIDO2
+
+O caminho FIDO2 utiliza uma credencial compatível com HMAC-secret. O fluxo validado exige verificação do usuário pelo autenticador, normalmente PIN ou biometria, conforme o dispositivo e a plataforma.
+
+## Segredo de recuperação
+
+O caminho alternativo utiliza um segredo aleatório independente. Ele deve ser guardado offline, em local seguro e separado dos arquivos protegidos.
+
+**Nunca envie o segredo de recuperação por chat, e-mail ou issue. Nunca o coloque no repositório.**
+
+## Limites importantes
+
+A perda do autenticador não causa perda imediata se o segredo de recuperação estiver disponível. A perda simultânea de todos os meios de desbloqueio torna os dados irrecuperáveis.
+
+O projeto ainda não oferece um assistente completo de criação e armazenamento do segredo pela interface. Não use esta versão para proteger dados sem antes entender e testar o processo de recuperação em arquivos descartáveis.
