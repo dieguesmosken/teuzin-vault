@@ -1,23 +1,27 @@
 # Teuzin Vault
 
-Aplicativo desktop open-source para compactação e proteção criptográfica de arquivos e pastas.
+Aplicativo desktop experimental para compactação e proteção criptográfica local de arquivos.
 
 **Autor:** Matheus M. Diegues  
 **GitHub:** [@dieguesmosken](https://github.com/dieguesmosken)  
 **Site oficial:** [https://vault.teuzin.com.br](https://vault.teuzin.com.br)  
 **Código-fonte:** [github.com/dieguesmosken/teuzin-vault](https://github.com/dieguesmosken/teuzin-vault)
 
-> **Aviso:** o Teuzin Vault está em desenvolvimento experimental. Não utilize esta versão para proteger a única cópia de arquivos importantes ou backups críticos.
+> **Aviso:** o Teuzin Vault está em desenvolvimento experimental. Não utilize esta versão como única cópia de arquivos importantes ou backups críticos. O projeto ainda não passou por auditoria independente.
 
-## Objetivos
+## Estado atual
 
-- Selecionar arquivos e pastas para proteção.
-- Compactar dados usando Zstandard.
-- Criptografar dados com AES-256-GCM.
-- Integrar autenticadores físicos FIDO2 compatíveis com HMAC-secret.
-- Derivar chaves com HKDF-SHA256.
-- Oferecer recuperação independente do autenticador físico.
-- Disponibilizar uma interface desktop simples.
+**Versão de desenvolvimento: 0.1.0.**
+
+- Núcleo criptográfico com AES-256-GCM e HKDF-SHA256.
+- Contêiner TVLT V1 preliminar, com registros autenticados.
+- Compartimentos independentes para FIDO2/HMAC-secret e recuperação.
+- Política de verificação do usuário obrigatória no fluxo FIDO2 validado em Yubico real.
+- Migração do compartimento FIDO2 para UV obrigatório, preservando o compartimento de recuperação e o arquivo original.
+- Interface desktop PySide6 com restauração inicial de arquivos individuais.
+- Suíte automatizada: 146 testes passaram na validação da primeira entrega da interface em 20/11/2026.
+
+A criação de novos cofres pela interface, o suporte a pastas e múltiplos arquivos, arrastar e soltar, progresso mensurável e cancelamento seguro ainda estão em desenvolvimento.
 
 ## Tecnologias
 
@@ -25,51 +29,29 @@ Aplicativo desktop open-source para compactação e proteção criptográfica de
 - PySide6
 - python-fido2
 - cryptography
-- Zstandard (`compression.zstd`, biblioteca padrão do Python 3.14+)
+- Zstandard por `compression.zstd` (Python 3.14+)
 - pytest
+- Astro + Starlight para o site e a documentação
 
-## Estado atual
+## Desenvolvimento
 
-**Versão de desenvolvimento: 0.1.0 — restauração inicial pela interface desktop.**
+Consulte [Instalação e desenvolvimento](https://vault.teuzin.com.br/docs/installation/) e o [roadmap](ROADMAP.md).
 
-A primeira entrega contém o núcleo criptográfico, formato preliminar do contêiner, proteção da DEK por compartimentos FIDO2 e recuperação, compactação incremental e operações transacionais para arquivos individuais.
+## Documentação e transparência
 
-A interface desktop agora oferece restauração de arquivos individuais TVLT V1. O usuário pode desbloquear o cofre com FIDO2 no Windows, exigindo verificação do usuário (PIN ou biometria), ou utilizar o segredo independente de recuperação. A operação acontece em segundo plano, com limite configurável para o tamanho restaurado e sem sobrescrever destinos existentes.
+- [Documentação oficial](https://vault.teuzin.com.br/docs/)
+- [Modelo de ameaças](docs/THREAT_MODEL.md)
+- [Pesquisa técnica](docs/TECHNICAL_RESEARCH.md)
+- [Migração de plataforma](docs/PLATFORM_MIGRATION.md)
+- [Licenças e política de atribuição](docs/LICENSES.md)
+- [Avisos de terceiros](THIRD_PARTY_NOTICES.md)
+- [Referências técnicas](docs/REFERENCES.md)
+- [Inventário de software (SBOM)](docs/SOFTWARE_BILL_OF_MATERIALS.md)
 
-A criação de novos cofres pela interface, o suporte a pastas e múltiplos arquivos, arrastar e soltar e o indicador de progresso detalhado ainda estão pendentes.
+## Licença
 
-## Roadmap
-
-O planejamento completo, com etapas e critérios de conclusão, está em [ROADMAP.md](ROADMAP.md).
-
-### Próximos marcos
-
-1. Revisar o modelo de ameaças, a política de verificação FIDO2 e os limites do formato.
-2. Construir a estrutura da interface desktop com PySide6.
-3. Integrar o fluxo de criação e restauração de arquivos individuais.
-4. Implementar manifesto e extração segura de pastas.
-5. Finalizar a experiência de recuperação e gerenciamento de autenticadores.
-
-As etapas não possuem datas prometidas. Segurança, testes e compatibilidade têm prioridade sobre velocidade de entrega.
-
-## Pesquisa técnica
-
-As oportunidades, referências e decisões em avaliação estão documentadas em [docs/TECHNICAL_RESEARCH.md](docs/TECHNICAL_RESEARCH.md).  
-O primeiro rascunho do modelo de ameaças está em [docs/THREAT_MODEL.md](docs/THREAT_MODEL.md).  
-Os requisitos futuros de compatibilidade e migração Linux estão em [docs/PLATFORM_MIGRATION.md](docs/PLATFORM_MIGRATION.md).
-
-## Site e atualizações
-
-O site oficial do projeto é publicado no GitHub Pages por GitHub Actions:
-
-- [Abrir site do Teuzin Vault](https://vault.teuzin.com.br/)
-- [Acompanhar o roadmap](ROADMAP.md)
-- [Ver alterações e marcos](https://github.com/dieguesmosken/teuzin-vault/commits/main)
-
-O domínio personalizado `vault.teuzin.com.br` está configurado com HTTPS obrigatório.
+O código original do Teuzin Vault está sob [Apache License 2.0](LICENSE). Dependências, ferramentas, fontes, componentes nativos e outros materiais de terceiros mantêm suas próprias licenças. Consulte [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## Segurança
 
-Consulte [SECURITY.md](SECURITY.md).
-
-Nunca publique credenciais, PINs, tokens, arquivos `.env`, chaves privadas, segredos de recuperação ou backups pessoais neste repositório.
+Consulte [SECURITY.md](SECURITY.md). Nunca publique credenciais, PINs, tokens, arquivos `.env`, chaves privadas, segredos de recuperação ou backups pessoais neste repositório.
