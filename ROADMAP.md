@@ -25,16 +25,17 @@ Criar um aplicativo desktop local, open-source e multiplataforma para compactar 
 - [x] Suíte inicial com 132 testes aprovados.
 - [x] Primeiro commit publicado no GitHub.
 
-**Limite deste marco:** os testes automatizados não equivalem a uma auditoria criptográfica. O formato ainda não está congelado e a interface ainda é um esqueleto.
+**Limite:** testes automatizados não equivalem a uma auditoria criptográfica. O formato ainda não está congelado.
 
 ### Marco 1 — Revisão do formato e do modelo de segurança
 
-<sub>Prioridade atual · antes de declarar o formato estável</sub>
+<sub>Em andamento</sub>
 
-- [x] Publicar o rascunho inicial do modelo de ameaças, identificando ativos, adversários, controles existentes e lacunas.
-- [ ] Revisar o modelo com o mantenedor e validar os cenários e prioridades.
-- [ ] Decidir a política de User Verification (UV) e testar PIN/UV em autenticadores reais.
-- [ ] Testar o impacto de UV e não-UV no resultado HMAC-secret, incluindo a recuperação/reproteção de credenciais já registradas.
+- [x] Publicar o rascunho inicial do modelo de ameaças.
+- [x] Definir política FIDO2 com User Verification obrigatória.
+- [x] Testar HMAC-secret com UV obrigatório em Yubico real.
+- [x] Implementar migração de compartimento FIDO2 em cópia separada, preservando o compartimento de recuperação.
+- [ ] Testar migração de um cofre pessoal legado real, com backup e segredo de recuperação verificados.
 - [ ] Confirmar o RP ID e as implicações de manter `vault.teuzin.com.br` como identidade da credencial.
 - [ ] Revisar limites de AES-GCM, contadores, quantidade de registros, bytes totais e ciclo de vida da DEK.
 - [ ] Decidir se o formato precisa de compartimentos extensíveis ou se a restrição FIDO2 + recuperação será mantida no V1.
@@ -45,24 +46,28 @@ Criar um aplicativo desktop local, open-source e multiplataforma para compactar 
 
 ### Marco 2 — Interface desktop com PySide6
 
-<sub>Próxima fase de produto</sub>
+<sub>Em andamento</sub>
 
-- [x] Criar janela principal com identidade visual consistente.
+- [x] Criar janela principal.
 - [x] Criar tela inicial, restauração de arquivo individual e página Sobre.
-- [ ] Criar o fluxo de criação de novos cofres pela interface.
 - [x] Implementar seleção de cofre e destino por diálogos nativos.
+- [x] Executar restaurações em workers, sem bloquear a interface.
+- [ ] Criar o fluxo de criação de novos cofres pela interface.
 - [ ] Adicionar suporte a arrastar e soltar arquivos.
 - [ ] Não mostrar segredos em logs, mensagens de erro ou histórico.
 - [ ] Adicionar acessibilidade básica, atalhos e mensagens claras.
+- [ ] Implementar progresso mensurável, velocidade e cancelamento seguro.
 
 ### Marco 3 — Fluxo completo para arquivos individuais
 
-- [ ] Integrar a interface ao núcleo já testado.
-- [ ] Criar um cofre com DEK aleatória e compartimentos de desbloqueio.
-- [ ] Realizar autenticação FIDO2 e recuperação independente.
+<sub>Em andamento</sub>
+
+- [x] Integrar a restauração de arquivos individuais à interface.
+- [x] Desbloquear restauração pelo caminho FIDO2 UV ou pelo segredo de recuperação.
+- [x] Restaurar por arquivo temporário e publicar após validação, sem sobrescrita por padrão.
+- [ ] Implementar criação de cofres pela interface, com DEK aleatória e compartimentos de desbloqueio.
 - [ ] Exibir o segredo de recuperação de forma segura, com confirmação de cópia/armazenamento.
-- [ ] Restaurar para arquivo temporário e publicar somente após validar o fluxo completo.
-- [ ] Implementar verificação de integridade sem sobrescrever arquivos existentes.
+- [ ] Cobrir fluxos completos de criação e restauração em hardware real.
 - [ ] Cobrir arquivos vazios, pequenos, grandes, bloqueados e modificados durante a operação.
 
 ### Marco 4 — Pastas e múltiplos arquivos
@@ -77,12 +82,11 @@ Criar um aplicativo desktop local, open-source e multiplataforma para compactar 
 
 ### Marco 5 — Recuperação e gerenciamento de chaves
 
-- [ ] Definir um formato legível e verificável para o segredo de recuperação.
+- [ ] Definir formato legível e verificável para o segredo de recuperação.
 - [ ] Oferecer instruções para manter cópia offline e testar a recuperação.
 - [ ] Avaliar suporte a mais de um autenticador físico.
 - [ ] Avaliar adicionar/remover compartimentos e reempacotar a DEK sem recriptografar todo o conteúdo.
 - [ ] Avaliar senha opcional usando Argon2id, somente se houver demanda e parâmetros calibrados.
-- [ ] Não usar HKDF como substituto de uma KDF resistente a ataques de dicionário para senhas humanas.
 - [ ] Documentar perda do autenticador, perda do segredo de recuperação e rotação.
 
 ### Marco 6 — Compactação e desempenho
@@ -95,7 +99,6 @@ Criar um aplicativo desktop local, open-source e multiplataforma para compactar 
 - [ ] Avaliar quadros independentes e índice seekable para restauração parcial.
 - [ ] Detectar quando a compactação não traz benefício e evitar trabalho desnecessário.
 - [ ] Manter checksum e limites de janela/saída na descompactação.
-- [ ] Só adotar mudanças que tragam benefício medido sem comprometer interoperabilidade.
 
 ### Marco 7 — Qualidade, segurança e compatibilidade
 
@@ -105,7 +108,6 @@ Criar um aplicativo desktop local, open-source e multiplataforma para compactar 
 - [ ] Testes de propriedade e casos gerados aleatoriamente.
 - [ ] Verificação de dependências, análise estática e detecção de segredos.
 - [ ] Revisão de permissões, temporários, logs e tratamento de memória sensível.
-- [ ] Guia de instalação, atualização, backup e recuperação.
 - [ ] Revisão independente de segurança antes de uma versão estável.
 
 ### Marco 8 — Distribuição e recursos avançados
@@ -117,12 +119,12 @@ Criar um aplicativo desktop local, open-source e multiplataforma para compactar 
 - [ ] Avaliar cofres divididos em volumes.
 - [ ] Avaliar backups incrementais e deduplicação, com análise explícita de vazamento de padrões.
 - [ ] Avaliar verificação, listagem e restauração seletiva sem extrair tudo.
-- [x] Publicar o site do projeto no GitHub Pages com domínio próprio e HTTPS.
+- [x] Publicar o site no GitHub Pages com domínio próprio e HTTPS.
+- [x] Definir Apache-2.0 para o código original e registrar a política de atribuição.
+- [ ] Gerar e revisar SBOM completo para os artefatos distribuídos.
 - [ ] Manter site, README, roadmap e documentação sincronizados a cada marco.
 
 ## Critérios para uma versão estável
-
-Uma versão estável exige, no mínimo:
 
 1. Formato documentado e congelado, com regras de compatibilidade e migração.
 2. Criação, desbloqueio, recuperação e restauração testados ponta a ponta.
@@ -135,11 +137,6 @@ Uma versão estável exige, no mínimo:
 
 Não serão prioridades para o V1: sincronização em nuvem, servidor de contas, compartilhamento social, deduplicação global, edição online e promessas de recuperação de dados sem uma chave válida.
 
----
-
-**Como acompanhar:** cada marco concluído deve ter testes, revisão de arquivos/segredos, atualização deste roadmap e commit próprio no repositório.
-
-
 ## Requisito futuro — migração Linux
 
-A migração de plataforma deverá preservar a experiência atual de downloads e a checagem antivírus automática. Os requisitos e candidatos avaliados estão em [docs/PLATFORM_MIGRATION.md](docs/PLATFORM_MIGRATION.md). Essa trilha é planejamento futuro e não altera a prioridade atual do núcleo do Teuzin Vault.
+A migração de plataforma deverá preservar a experiência atual de downloads e a checagem antivírus automática. Os requisitos e candidatos avaliados estão em [docs/PLATFORM_MIGRATION.md](docs/PLATFORM_MIGRATION.md). Essa trilha é planejamento futuro.
