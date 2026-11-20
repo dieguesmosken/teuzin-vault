@@ -1,15 +1,15 @@
 :root {
-  --sl-color-accent-low: #302a1e;
-  --sl-color-accent: #c6a875;
-  --sl-color-accent-high: #f0dfbd;
-  --sl-color-white: #f0efe7;
-  --sl-color-gray-1: #e0e1d8;
-  --sl-color-gray-2: #bfc4b7;
-  --sl-color-gray-3: #90998a;
-  --sl-color-gray-4: #596451;
-  --sl-color-gray-5: #343d30;
-  --sl-color-gray-6: #20261e;
-  --sl-color-black: #111510;
+  --sl-color-accent-low: #2A1A3D;
+  --sl-color-accent: #A78BFA;
+  --sl-color-accent-high: #E9D5FF;
+  --sl-color-white: #F5F0FA;
+  --sl-color-gray-1: #EAE3F2;
+  --sl-color-gray-2: #CCC0DC;
+  --sl-color-gray-3: #A394B7;
+  --sl-color-gray-4: #76628F;
+  --sl-color-gray-5: #4A3860;
+  --sl-color-gray-6: #251A32;
+  --sl-color-black: #0D0913;
   --sl-font:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --sl-font-mono: ui-monospace, 'Cascadia Code', 'Segoe UI Mono', monospace;
@@ -27,7 +27,7 @@ html {
   font-size: 0.9rem;
 }
 ::selection {
-  background: #c6a87555;
+  background: #A78BFA55;
 }
 
 @media (prefers-reduced-motion: reduce) {
