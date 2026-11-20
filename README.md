@@ -30,11 +30,13 @@ Aplicativo desktop open-source para compactação e proteção criptográfica de
 
 ## Estado atual
 
-**Versão de desenvolvimento: 0.1.0 — núcleo inicial publicado.**
+**Versão de desenvolvimento: 0.1.0 — restauração inicial pela interface desktop.**
 
 A primeira entrega contém o núcleo criptográfico, formato preliminar do contêiner, proteção da DEK por compartimentos FIDO2 e recuperação, compactação incremental e operações transacionais para arquivos individuais.
 
-A interface atual é somente uma janela inicial. O suporte completo a pastas, recuperação pela interface e formato estável ainda estão pendentes.
+A interface desktop agora oferece restauração de arquivos individuais TVLT V1. O usuário pode desbloquear o cofre com FIDO2 no Windows, exigindo verificação do usuário (PIN ou biometria), ou utilizar o segredo independente de recuperação. A operação acontece em segundo plano, com limite configurável para o tamanho restaurado e sem sobrescrever destinos existentes.
+
+A criação de novos cofres pela interface, o suporte a pastas e múltiplos arquivos, arrastar e soltar e o indicador de progresso detalhado ainda estão pendentes.
 
 ## Roadmap
 

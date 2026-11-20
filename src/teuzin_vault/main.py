@@ -1,24 +1,16 @@
-﻿"""Ponto de entrada do Teuzin Vault."""
+"""Ponto de entrada do Teuzin Vault."""
 
 import sys
 
-from PySide6.QtWidgets import QApplication, QLabel, QMainWindow
+from PySide6.QtWidgets import QApplication
 
-
-class MainWindow(QMainWindow):
-    """Janela principal inicial."""
-
-    def __init__(self) -> None:
-        super().__init__()
-        self.setWindowTitle("Teuzin Vault")
-        self.resize(900, 600)
-        self.setCentralWidget(
-            QLabel("Teuzin Vault — estrutura inicial do projeto")
-        )
+from teuzin_vault.ui.main_window import MainWindow
 
 
 def main() -> int:
     app = QApplication(sys.argv)
+    app.setApplicationName("Teuzin Vault")
+    app.setOrganizationName("Teuzin")
     window = MainWindow()
     window.show()
     return app.exec()

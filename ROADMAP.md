@@ -47,11 +47,11 @@ Criar um aplicativo desktop local, open-source e multiplataforma para compactar 
 
 <sub>Próxima fase de produto</sub>
 
-- [ ] Criar janela principal com identidade visual consistente.
-- [ ] Criar telas de início, criação de cofre, abertura e recuperação.
-- [ ] Implementar seleção por diálogo e arrastar/soltar arquivos.
-- [ ] Executar operações longas em workers, sem bloquear a interface.
-- [ ] Exibir progresso, velocidade, etapa atual e cancelamento seguro.
+- [x] Criar janela principal com identidade visual consistente.
+- [x] Criar tela inicial, restauração de arquivo individual e página Sobre.
+- [ ] Criar o fluxo de criação de novos cofres pela interface.
+- [x] Implementar seleção de cofre e destino por diálogos nativos.
+- [ ] Adicionar suporte a arrastar e soltar arquivos.
 - [ ] Não mostrar segredos em logs, mensagens de erro ou histórico.
 - [ ] Adicionar acessibilidade básica, atalhos e mensagens claras.
 
